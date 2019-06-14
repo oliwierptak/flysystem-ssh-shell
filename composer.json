@@ -1,0 +1,35 @@
+{
+    "name": "oliwierptak/flysystem-ssh-shell",
+    "description": "SSH/Shell adapter for league/flysystem",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7",
+        "league/flysystem": "^1.0",
+        "symfony/process": "^3",
+        "phpunit/phpunit": "^6",
+        "phuxtil/find": "@dev",
+        "phuxtil/stat": "@dev"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^3",
+        "ext-posix": "*",
+        "phpstan/phpstan": "^0.9.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "League\\Flysystem\\SshShell\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TestsFlysystemSshShell\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html tests/logs/coverage/",
+        "stan": "vendor/bin/phpstan analyze src --level 5"
+    }
+}
