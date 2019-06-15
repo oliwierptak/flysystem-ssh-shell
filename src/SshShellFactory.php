@@ -3,7 +3,6 @@
 namespace League\Flysystem\SshShell;
 
 use League\Flysystem\SshShell\Adapter\AdapterWriter;
-use League\Flysystem\SshShell\Adapter\Response\Decorator\ResponseDecoratorContainer;
 use League\Flysystem\SshShell\Adapter\SshShellAdapter;
 use League\Flysystem\SshShell\Adapter\AdapterReader;
 use League\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter;
@@ -33,8 +32,7 @@ class SshShellFactory
         $adapter = new SshShellAdapter(
             $this->createAdapterReader($configurator),
             $this->createAdapterWriter($configurator),
-            $this->createVisibility(),
-            $this->createResponseDecoratorContainer()->collect()
+            $this->createVisibility()
         );
 
         $adapter->setPathPrefix($configurator->getRoot());
@@ -109,13 +107,6 @@ class SshShellFactory
     {
         return new StatToSplFileInfo(
             $this->createChmodFacade()
-        );
-    }
-
-    protected function createResponseDecoratorContainer(): ResponseDecoratorContainer
-    {
-        return new ResponseDecoratorContainer(
-            $this->createVisibility()
         );
     }
 
