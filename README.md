@@ -82,8 +82,8 @@ include __DIR__ . '/vendor/autoload.php';
 
 $configurator = (new SshShellConfigurator())
     ->setRoot('/tmp/remote_fs')
-    ->setUser('root')
-    ->setHost('pup-data-container');
+    ->setUser('user')
+    ->setHost('host');
 
 $adapter = (new SshShellFactory())->createAdapter($configurator);
 
