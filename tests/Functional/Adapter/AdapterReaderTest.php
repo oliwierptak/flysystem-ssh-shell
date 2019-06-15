@@ -17,6 +17,7 @@ class AdapterReaderTest extends TestCase
     const REMOTE_FILE = self::REMOTE_PATH . 'remote.txt';
     const REMOTE_FILE_LINK = self::REMOTE_PATH . 'remote_link.txt';
     const REMOTE_NAME = '/remote.txt';
+    const REMOTE_PATH_NAME = '/';
 
     /**
      * @var \League\Flysystem\SshShell\Configurator
@@ -170,5 +171,50 @@ class AdapterReaderTest extends TestCase
             \file_get_contents(static::REMOTE_FILE),
             $result['contents']
         );
+    }
+
+    public function test_listContents()
+    {
+        $result = $this->adapter->listContents(static::REMOTE_PATH_NAME);
+
+        foreach ($result as $output) {
+            /** @var \SplFileInfo $output */
+            $expected = new \SplFileInfo($output->getPathname());
+            $this->assertOutput($expected, $output);
+        }
+    }
+
+    protected function assertOutput(\SplFileInfo $expected, \SplFileInfo $info)
+    {
+        $octal = substr(sprintf('%o', fileperms($expected->getPathname())), -4);
+
+        //links are resolved by find, however fileperms() and filetype() will return link info
+        if ($expected->isLink()) {
+            $this->assertEquals('file', $info->getType());
+            $this->assertEquals(false, $info->isLink());
+        } else {
+            $this->assertEquals($expected->getType(), $info->getType());
+            $this->assertEquals($expected->isLink(), $info->isLink());
+        }
+
+        $this->assertEquals($octal, $info->getPerms());
+        $this->assertEquals($expected->getOwner(), $info->getOwner());
+        $this->assertEquals($expected->getGroup(), $info->getGroup());
+        $this->assertEquals($expected->getInode(), $info->getInode());
+        $this->assertEquals($expected->getSize(), $info->getSize());
+        $this->assertEquals($expected->getFilename(), $info->getFilename());
+        $this->assertEquals($expected->getPathname(), $info->getPathname());
+        $this->assertEquals($expected->getPath(), $info->getPath());
+        $this->assertEquals($expected->getBasename(), $info->getBasename());
+        $this->assertEquals($expected->getExtension(), $info->getExtension());
+        $this->assertEquals($expected->getRealPath(), $info->getRealPath());
+        $this->assertEquals($expected->getATime(), $info->getATime());
+        $this->assertEquals($expected->getMTime(), $info->getMTime());
+        $this->assertEquals($expected->getCTime(), $info->getCTime());
+        $this->assertEquals($expected->isFile(), $info->isFile());
+        $this->assertEquals($expected->isDir(), $info->isDir());
+        $this->assertEquals($expected->isReadable(), $info->isReadable());
+        $this->assertEquals($expected->isWritable(), $info->isWritable());
+        $this->assertEquals($expected->isExecutable(), $info->isExecutable());
     }
 }

@@ -53,10 +53,20 @@ class ProcessReader
 
     public function getLinkTarget(string $path, string $prefix = '', string $postfix = ''): Process
     {
-        return $this->process->execute('%s readlink -e %s', [$prefix, $path, $postfix]);
+        return $this->process->execute('%s realpath -e %s', [$prefix, $path, $postfix]);
     }
 
-    public function listContents(string $directory, bool $recursive = false)
+    /**
+     * Note: symbolic links will be resolved.
+     *
+     * @param string $directory
+     * @param string $format
+     * @param string $lineDelimiter
+     * @param bool $recursive
+     *
+     * @return \Symfony\Component\Process\Process
+     */
+    public function listContents(string $directory, string $format, string $lineDelimiter, bool $recursive = false)
     {
         $maxDepth = '';
         if (!$recursive) {
@@ -64,10 +74,12 @@ class ProcessReader
         }
 
         return $this->process->execute(
-            'find %s %s -print',
+            'echo $(find -L %s %s -printf "\"%s%s"\")',
             [
-                $directory,
+                \escapeshellarg($directory),
                 $maxDepth,
+                $format,
+                $lineDelimiter,
             ]
         );
     }

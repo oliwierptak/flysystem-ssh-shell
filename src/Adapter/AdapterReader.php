@@ -4,6 +4,8 @@ namespace League\Flysystem\SshShell\Adapter;
 
 use League\Flysystem\SshShell\FileInfo\Stat\StatToSplFileInfo;
 use League\Flysystem\SshShell\Process\ProcessReader;
+use Phuxtil\Find\FindConfigurator;
+use Phuxtil\Find\FindFacade;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
 use Phuxtil\Stat\StatFacade;
 
@@ -69,6 +71,21 @@ class AdapterReader
 
     public function listContents(string $directory, bool $recursive = false): array
     {
-        $process = $this->reader->listContents($directory, $recursive);
+        $findFacade = new FindFacade();
+        $configurator = new FindConfigurator();
+
+        $process = $this->reader->listContents(
+            $directory,
+            $configurator->getFormat(),
+            $configurator->getLineDelimiter(),
+            $recursive
+        );
+
+        if (!$process->isSuccessful()) {
+            return [];
+        }
+
+        $configurator->setFindOutput($process->getOutput());
+        return $findFacade->process($configurator);
     }
 }
