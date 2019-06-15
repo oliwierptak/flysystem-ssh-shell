@@ -2,7 +2,7 @@
 
 namespace League\Flysystem\SshShell\Process;
 
-use League\Flysystem\SshShell\Configurator;
+use League\Flysystem\SshShell\SshShellConfigurator;
 use League\Flysystem\SshShell\Process\Authentication\Authenticator;
 use Symfony\Component\Process\Process;
 
@@ -14,13 +14,13 @@ class Ssh
     protected $authenticator;
 
     /**
-     * @var \League\Flysystem\SshShell\Configurator
+     * @var \League\Flysystem\SshShell\SshShellConfigurator
      */
     protected $configurator;
 
     public function __construct(
         Authenticator $authenticator,
-        Configurator $configurator
+        SshShellConfigurator $configurator
     ) {
         $this->authenticator = $authenticator;
         $this->configurator = $configurator;

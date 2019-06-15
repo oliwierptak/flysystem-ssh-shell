@@ -2,7 +2,8 @@
 
 namespace League\Flysystem\SshShell\Process\Authentication;
 
-use League\Flysystem\SshShell\Configurator;
+use League\Flysystem\SshShell\Process\Authentication\Type\PrivateKey;
+use League\Flysystem\SshShell\SshShellConfigurator;
 
 class Authenticator
 {
@@ -12,12 +13,12 @@ class Authenticator
     ];
 
     /**
-     * @param \League\Flysystem\SshShell\Configurator $configurator
+     * @param \League\Flysystem\SshShell\SshShellConfigurator $configurator
      *
      * @return string
      * @throws \InvalidArgumentException
      */
-    public function generate(Configurator $configurator): string
+    public function generate(SshShellConfigurator $configurator): string
     {
         $auth = $this->getAuthByType($configurator);
 
@@ -25,15 +26,19 @@ class Authenticator
     }
 
     /**
-     * @param \League\Flysystem\SshShell\Configurator $configurator
+     * @param \League\Flysystem\SshShell\SshShellConfigurator $configurator
      *
      * @return AbstractAuthentication
      * @throws \InvalidArgumentException
      */
-    protected function getAuthByType(Configurator $configurator): AbstractAuthentication
+    protected function getAuthByType(SshShellConfigurator $configurator): AbstractAuthentication
     {
         if (!isset($this->authenticationTypes[$configurator->getAuthType()])) {
             throw new \InvalidArgumentException('Unknown authentication type: ' . $configurator->getAuthType());
+        }
+
+        if (trim($configurator->getPrivateKey()) !== '') {
+            $configurator->setAuthType(PrivateKey::TYPE);
         }
 
         $className = $this->authenticationTypes[$configurator->getAuthType()];

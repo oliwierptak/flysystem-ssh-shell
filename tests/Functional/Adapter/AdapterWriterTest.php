@@ -4,8 +4,7 @@ namespace TestsFlysystemSshShell\Functional\Adapter;
 
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
-use League\Flysystem\SshShell\Configurator;
-use League\Flysystem\SshShell\Process\Authentication\Type\PrivateKey;
+use League\Flysystem\SshShell\SshShellConfigurator;
 use League\Flysystem\SshShell\SshShellFactory;
 use PHPUnit\Framework\TestCase;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
@@ -26,7 +25,7 @@ class AdapterWriterTest extends TestCase
     const REMOTE_INVALID_NAME = 'doesnotexist/remote.txt';
 
     /**
-     * @var \League\Flysystem\SshShell\Configurator
+     * @var \League\Flysystem\SshShell\SshShellConfigurator
      */
     protected $configurator;
 
@@ -44,7 +43,7 @@ class AdapterWriterTest extends TestCase
     {
         $this->cleanup();
 
-        $this->configurator = (new Configurator())
+        $this->configurator = (new SshShellConfigurator())
             ->setRoot(static::REMOTE_PATH)
             ->setUser('root')
             ->setHost('pup-data-container');
@@ -148,9 +147,7 @@ class AdapterWriterTest extends TestCase
 
     public function test_write_should_create_path_with_private_key_auth()
     {
-        $this->configurator
-            ->setPrivateKey('~/.ssh/id_rsa.data_container')
-            ->setAuthType(PrivateKey::TYPE);
+        $this->configurator->setPrivateKey('~/.ssh/id_rsa.data_container');
 
         $adapter = $this->factory->createAdapter(
             $this->configurator

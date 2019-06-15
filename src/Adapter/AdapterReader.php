@@ -85,7 +85,7 @@ class AdapterReader
             return [];
         }
 
-        $configurator->setFindOutput($process->getOutput());
+        $configurator->setFindOutput(trim($process->getOutput()));
         return $this->findFacade->process($configurator);
     }
 }

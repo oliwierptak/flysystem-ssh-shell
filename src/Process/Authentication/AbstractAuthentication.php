@@ -2,20 +2,20 @@
 
 namespace League\Flysystem\SshShell\Process\Authentication;
 
-use League\Flysystem\SshShell\Configurator;
+use League\Flysystem\SshShell\SshShellConfigurator;
 
 abstract class AbstractAuthentication
 {
     const TYPE = '';
 
     /**
-     * @var \League\Flysystem\SshShell\Configurator
+     * @var \League\Flysystem\SshShell\SshShellConfigurator
      */
     protected $configurator;
 
     abstract protected function prepareAuth(): string;
 
-    public function __construct(Configurator $configurator)
+    public function __construct(SshShellConfigurator $configurator)
     {
         $this->configurator = $configurator;
     }

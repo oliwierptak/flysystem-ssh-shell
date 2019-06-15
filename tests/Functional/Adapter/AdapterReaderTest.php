@@ -3,7 +3,7 @@
 namespace TestsFlysystemSshShell\Functional\Adapter;
 
 use League\Flysystem\AdapterInterface;
-use League\Flysystem\SshShell\Configurator;
+use League\Flysystem\SshShell\SshShellConfigurator;
 use League\Flysystem\SshShell\SshShellFactory;
 use PHPUnit\Framework\TestCase;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
@@ -20,7 +20,7 @@ class AdapterReaderTest extends TestCase
     const REMOTE_PATH_NAME = '/';
 
     /**
-     * @var \League\Flysystem\SshShell\Configurator
+     * @var \League\Flysystem\SshShell\SshShellConfigurator
      */
     protected $configurator;
 
@@ -51,7 +51,7 @@ class AdapterReaderTest extends TestCase
         $this->expectedFileInfo = (new VirtualSplFileInfo(static::REMOTE_FILE))
             ->fromArray($expectedData);
 
-        $this->configurator = (new Configurator())
+        $this->configurator = (new SshShellConfigurator())
             ->setRoot(static::REMOTE_PATH)
             ->setUser('root')
             ->setHost('pup-data-container');

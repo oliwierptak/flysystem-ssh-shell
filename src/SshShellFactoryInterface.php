@@ -6,5 +6,5 @@ use League\Flysystem\SshShell\Adapter\SshShellAdapter;
 
 interface SshShellFactoryInterface
 {
-    public function createAdapter(Configurator $configurator): SshShellAdapter;
+    public function createAdapter(SshShellConfigurator $configurator): SshShellAdapter;
 }

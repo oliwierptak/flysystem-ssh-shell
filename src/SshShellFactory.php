@@ -21,7 +21,7 @@ use Phuxtil\Stat\StatFacadeInterface;
 
 class SshShellFactory implements SshShellFactoryInterface
 {
-    public function createAdapter(Configurator $configurator): SshShellAdapter
+    public function createAdapter(SshShellConfigurator $configurator): SshShellAdapter
     {
         $adapter = new SshShellAdapter(
             $this->createAdapterReader($configurator),
@@ -34,7 +34,7 @@ class SshShellFactory implements SshShellFactoryInterface
         return $adapter;
     }
 
-    protected function createAdapterReader(Configurator $configurator): AdapterReader
+    protected function createAdapterReader(SshShellConfigurator $configurator): AdapterReader
     {
         return new AdapterReader(
             $this->createProcessReader($configurator),
@@ -44,7 +44,7 @@ class SshShellFactory implements SshShellFactoryInterface
         );
     }
 
-    protected function createAdapterWriter(Configurator $configurator): AdapterWriter
+    protected function createAdapterWriter(SshShellConfigurator $configurator): AdapterWriter
     {
         return new AdapterWriter(
             $this->createProcessWriter($configurator),
@@ -52,14 +52,14 @@ class SshShellFactory implements SshShellFactoryInterface
         );
     }
 
-    protected function createProcessReader(Configurator $configurator): ProcessReader
+    protected function createProcessReader(SshShellConfigurator $configurator): ProcessReader
     {
         return new ProcessReader(
             $this->createSshProcess($configurator)
         );
     }
 
-    protected function createSshProcess(Configurator $configurator): Ssh
+    protected function createSshProcess(SshShellConfigurator $configurator): Ssh
     {
         return new Ssh(
             $this->createAuthenticator(),
@@ -67,7 +67,7 @@ class SshShellFactory implements SshShellFactoryInterface
         );
     }
 
-    protected function createProcessWriter(Configurator $configurator): ProcessWriter
+    protected function createProcessWriter(SshShellConfigurator $configurator): ProcessWriter
     {
         return new ProcessWriter(
             $this->createScpProcess($configurator),
@@ -75,7 +75,7 @@ class SshShellFactory implements SshShellFactoryInterface
         );
     }
 
-    protected function createScpProcess(Configurator $configurator): Scp
+    protected function createScpProcess(SshShellConfigurator $configurator): Scp
     {
         return new Scp(
             $this->createAuthenticator(),

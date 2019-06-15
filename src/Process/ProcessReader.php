@@ -26,34 +26,9 @@ class ProcessReader
         return $this->process->execute('%s cat %s %s', [$prefix, $path, $postfix]);
     }
 
-    public function file(string $path, string $prefix = '', string $postfix = ''): Process
-    {
-        return $this->process->execute('%s file -b %s %s', [$prefix, $path, $postfix]);
-    }
-
     public function stat(string $path, string $prefix = '', string $postfix = ''): Process
     {
         return $this->process->execute('%s stat %s %s', [$prefix, $path, $postfix]);
-    }
-
-    public function isWritable(string $path, string $prefix = '', string $postfix = ''): Process
-    {
-        return $this->process->execute('%s [ -w %s ] && echo 0 %s', [$prefix, $path, $postfix]);
-    }
-
-    public function isReadable(string $path, string $prefix = '', string $postfix = ''): Process
-    {
-        return $this->process->execute('%s [ -r %s ] && echo 0 %s', [$prefix, $path, $postfix]);
-    }
-
-    public function isExecutable(string $path, string $prefix = '', string $postfix = ''): Process
-    {
-        return $this->process->execute('%s [ -x %s ] && echo 0 %s', [$prefix, $path, $postfix]);
-    }
-
-    public function getLinkTarget(string $path, string $prefix = '', string $postfix = ''): Process
-    {
-        return $this->process->execute('%s realpath -e %s', [$prefix, $path, $postfix]);
     }
 
     /**

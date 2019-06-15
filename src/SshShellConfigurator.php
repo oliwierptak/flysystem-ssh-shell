@@ -2,7 +2,7 @@
 
 namespace League\Flysystem\SshShell;
 
-class Configurator
+class SshShellConfigurator
 {
     /**
      * @var string
@@ -30,11 +30,6 @@ class Configurator
     protected $root = '/tmp';
 
     /**
-     * @var string
-     */
-    protected $remoteRoot = '/tmp';
-
-    /**
      * @var int
      */
     protected $port = 22;
@@ -44,7 +39,7 @@ class Configurator
         return $this->user;
     }
 
-    public function setUser(string $user): Configurator
+    public function setUser(string $user): SshShellConfigurator
     {
         $this->user = $user;
 
@@ -56,7 +51,7 @@ class Configurator
         return $this->host;
     }
 
-    public function setHost(string $host): Configurator
+    public function setHost(string $host): SshShellConfigurator
     {
         $this->host = $host;
 
@@ -68,7 +63,7 @@ class Configurator
         return $this->privateKey;
     }
 
-    public function setPrivateKey(string $privateKey): Configurator
+    public function setPrivateKey(string $privateKey): SshShellConfigurator
     {
         $this->privateKey = $privateKey;
 
@@ -80,7 +75,7 @@ class Configurator
         return $this->authType;
     }
 
-    public function setAuthType(string $authType): Configurator
+    public function setAuthType(string $authType): SshShellConfigurator
     {
         $this->authType = $authType;
 
@@ -92,7 +87,7 @@ class Configurator
         return $this->root;
     }
 
-    public function setRoot(string $root): Configurator
+    public function setRoot(string $root): SshShellConfigurator
     {
         $this->root = $root;
 
@@ -104,7 +99,7 @@ class Configurator
         return $this->port;
     }
 
-    public function setPort(int $port): Configurator
+    public function setPort(int $port): SshShellConfigurator
     {
         $this->port = $port;
 
