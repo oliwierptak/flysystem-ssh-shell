@@ -1,6 +1,6 @@
 # flysystem-ssh-shell
 
-This is a Flysystem adapter for SSH shell.
+Flysystem adapter for SSH shell.
 
 <!--- 
 ### Installation
@@ -16,7 +16,7 @@ The following programs installed and configured on local host:
 - ssh
 - scp
 
-The following programs installed on the ssh host:
+The following programs installed on the remote host:
 - find
 - cat
 - stat
@@ -84,8 +84,8 @@ include __DIR__ . '/vendor/autoload.php';
 
 $configurator = (new SshShellConfigurator())
     ->setRoot('/tmp/remote_fs')
-    ->setUser('root')
-    ->setHost('pup-data-container');
+    ->setUser('user')
+    ->setHost('host');
 
 $adapter = (new SshShellFactory())->createAdapter($configurator);
 $filesystem = new Filesystem($adapter);
