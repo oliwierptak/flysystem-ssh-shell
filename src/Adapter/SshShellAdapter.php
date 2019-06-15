@@ -9,7 +9,7 @@ use League\Flysystem\Config;
 use League\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
 
-class SshBashAdapter extends AbstractAdapter implements CanOverwriteFiles, AdapterInterface
+class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, AdapterInterface
 {
     /**
      * @var \League\Flysystem\SshShell\Adapter\AdapterReader
@@ -78,7 +78,7 @@ class SshBashAdapter extends AbstractAdapter implements CanOverwriteFiles, Adapt
      * @param Config $config Config object
      *
      * @return array|false false on failure file meta data on success
-     * @see \League\Flysystem\SshShell\Adapter\SshBashAdapter::write()
+     * @see \League\Flysystem\SshShell\Adapter\SshShellAdapter::write()
      *
      */
     public function writeStream($path, $resource, Config $config)
@@ -121,7 +121,7 @@ class SshBashAdapter extends AbstractAdapter implements CanOverwriteFiles, Adapt
      * @param Config $config Config object
      *
      * @return array|false false on failure file meta data on success
-     * @see \League\Flysystem\SshShell\Adapter\SshBashAdapter::update()
+     * @see \League\Flysystem\SshShell\Adapter\SshShellAdapter::update()
      *
      */
     public function updateStream($path, $resource, Config $config)
@@ -287,7 +287,7 @@ class SshBashAdapter extends AbstractAdapter implements CanOverwriteFiles, Adapt
      * @param string $path
      *
      * @return array|false
-     * @see \League\Flysystem\SshShell\Adapter\SshBashAdapter::read()
+     * @see \League\Flysystem\SshShell\Adapter\SshShellAdapter::read()
      *
      */
     public function readStream($path)

@@ -4,7 +4,7 @@ namespace TestsFlysystemSshShell\Functional\Adapter;
 
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\SshShell\Configurator;
-use League\Flysystem\SshShell\SshBashFactory;
+use League\Flysystem\SshShell\SshShellFactory;
 use PHPUnit\Framework\TestCase;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
 use SplFileInfo;
@@ -25,7 +25,7 @@ class AdapterReaderTest extends TestCase
     protected $configurator;
 
     /**
-     * @var SshBashFactory
+     * @var SshShellFactory
      */
     protected $factory;
 
@@ -35,7 +35,7 @@ class AdapterReaderTest extends TestCase
     protected $expectedFileInfo;
 
     /**
-     * @var \League\Flysystem\SshShell\Adapter\SshBashAdapter
+     * @var \League\Flysystem\SshShell\Adapter\SshShellAdapter
      */
     protected $adapter;
 
@@ -56,7 +56,7 @@ class AdapterReaderTest extends TestCase
             ->setUser('root')
             ->setHost('pup-data-container');
 
-        $this->factory = new SshBashFactory();
+        $this->factory = new SshShellFactory();
         $this->adapter = $this->factory->createAdapter(
             $this->configurator
         );

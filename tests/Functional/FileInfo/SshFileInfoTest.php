@@ -4,7 +4,7 @@ namespace TestsFlysystemSshShell\Functional\FileInfo;
 
 use League\Flysystem\SshShell\Configurator;
 use League\Flysystem\SshShell\FileInfo\SshFileInfo;
-use League\Flysystem\SshShell\SshBashFactory;
+use League\Flysystem\SshShell\SshShellFactory;
 use PHPUnit\Framework\TestCase;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
 use Phuxtil\Stat\DefinesInterface as StatDefinesInterface;
@@ -24,7 +24,7 @@ class SshFileInfoTest extends TestCase
     protected $configurator;
 
     /**
-     * @var SshBashFactory
+     * @var SshShellFactory
      */
     protected $factory;
 
@@ -55,7 +55,7 @@ class SshFileInfoTest extends TestCase
             ->setUser('root')
             ->setHost('pup-data-container');
 
-        $this->factory = new SshBashFactory();
+        $this->factory = new SshShellFactory();
         $this->sshFileInfo = $this->factory->createSshFileInfo(
             static::REMOTE_FILE,
             $this->configurator

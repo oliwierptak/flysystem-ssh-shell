@@ -6,7 +6,7 @@ use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
 use League\Flysystem\SshShell\Configurator;
 use League\Flysystem\SshShell\Process\Authentication\Type\PrivateKey;
-use League\Flysystem\SshShell\SshBashFactory;
+use League\Flysystem\SshShell\SshShellFactory;
 use PHPUnit\Framework\TestCase;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
 
@@ -31,7 +31,7 @@ class AdapterWriterTest extends TestCase
     protected $configurator;
 
     /**
-     * @var SshBashFactory
+     * @var SshShellFactory
      */
     protected $factory;
 
@@ -49,7 +49,7 @@ class AdapterWriterTest extends TestCase
             ->setUser('root')
             ->setHost('pup-data-container');
 
-        $this->factory = new SshBashFactory();
+        $this->factory = new SshShellFactory();
     }
 
     protected function setupRemoteFile()

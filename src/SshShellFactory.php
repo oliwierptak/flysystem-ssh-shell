@@ -4,7 +4,7 @@ namespace League\Flysystem\SshShell;
 
 use League\Flysystem\SshShell\Adapter\AdapterWriter;
 use League\Flysystem\SshShell\Adapter\Response\Decorator\ResponseDecoratorContainer;
-use League\Flysystem\SshShell\Adapter\SshBashAdapter;
+use League\Flysystem\SshShell\Adapter\SshShellAdapter;
 use League\Flysystem\SshShell\Adapter\AdapterReader;
 use League\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter;
 use League\Flysystem\SshShell\FileInfo\SshFileInfo;
@@ -17,7 +17,7 @@ use League\Flysystem\SshShell\Process\Ssh;
 use Phuxtil\Chmod\ChmodFacade;
 use Phuxtil\Stat\StatFacade;
 
-class SshBashFactory
+class SshShellFactory
 {
     public function createSshFileInfo(string $path, Configurator $configurator): SshFileInfo
     {
@@ -28,9 +28,9 @@ class SshBashFactory
         );
     }
 
-    public function createAdapter(Configurator $configurator): SshBashAdapter
+    public function createAdapter(Configurator $configurator): SshShellAdapter
     {
-        $adapter = new SshBashAdapter(
+        $adapter = new SshShellAdapter(
             $this->createAdapterReader($configurator),
             $this->createAdapterWriter($configurator),
             $this->createVisibility(),
