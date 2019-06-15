@@ -1,5 +1,5 @@
 {
-    "name": "oliwierptak/flysystem-ssh-shell",
+    "name": "phuxtil/flysystem-ssh-shell",
     "description": "SSH/Shell adapter for league/flysystem",
     "type": "library",
     "license": "MIT",
@@ -19,12 +19,12 @@
     },
     "autoload": {
         "psr-4": {
-            "League\\Flysystem\\SshShell\\": "src/"
+            "Phuxtil\\Flysystem\\SshShell\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "TestsFlysystemSshShell\\": "tests/"
+            "TestsPhuxtilFlysystemSshShell\\": "tests/"
         }
     },
     "scripts": {

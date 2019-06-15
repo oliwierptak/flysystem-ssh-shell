@@ -1,8 +1,8 @@
 <?php
 
-namespace League\Flysystem\SshShell\Process\Authentication\Type;
+namespace Phuxtil\Flysystem\SshShell\Process\Authentication\Type;
 
-use League\Flysystem\SshShell\Process\Authentication\AbstractAuthentication;
+use Phuxtil\Flysystem\SshShell\Process\Authentication\AbstractAuthentication;
 
 class Config extends AbstractAuthentication
 {

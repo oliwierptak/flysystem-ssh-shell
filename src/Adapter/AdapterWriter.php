@@ -1,19 +1,19 @@
 <?php
 
-namespace League\Flysystem\SshShell\Adapter;
+namespace Phuxtil\Flysystem\SshShell\Adapter;
 
-use League\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter;
-use League\Flysystem\SshShell\Process\ProcessWriter;
+use Phuxtil\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter;
+use Phuxtil\Flysystem\SshShell\Process\ProcessWriter;
 
 class AdapterWriter
 {
     /**
-     * @var \League\Flysystem\SshShell\Process\ProcessWriter
+     * @var \Phuxtil\Flysystem\SshShell\Process\ProcessWriter
      */
     protected $writer;
 
     /**
-     * @var \League\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter
+     * @var \Phuxtil\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter
      */
     protected $visibility;
 

@@ -1,15 +1,15 @@
 <?php
 
-namespace League\Flysystem\SshShell\Process\Authentication;
+namespace Phuxtil\Flysystem\SshShell\Process\Authentication;
 
-use League\Flysystem\SshShell\SshShellConfigurator;
+use Phuxtil\Flysystem\SshShell\SshShellConfigurator;
 
 abstract class AbstractAuthentication
 {
     const TYPE = '';
 
     /**
-     * @var \League\Flysystem\SshShell\SshShellConfigurator
+     * @var \Phuxtil\Flysystem\SshShell\SshShellConfigurator
      */
     protected $configurator;
 

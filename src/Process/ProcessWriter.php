@@ -1,18 +1,18 @@
 <?php
 
-namespace League\Flysystem\SshShell\Process;
+namespace Phuxtil\Flysystem\SshShell\Process;
 
 use Symfony\Component\Process\Process;
 
 class ProcessWriter
 {
     /**
-     * @var \League\Flysystem\SshShell\Process\Scp
+     * @var \Phuxtil\Flysystem\SshShell\Process\Scp
      */
     protected $scp;
 
     /**
-     * @var \League\Flysystem\SshShell\Process\Ssh
+     * @var \Phuxtil\Flysystem\SshShell\Process\Ssh
      */
     protected $ssh;
 

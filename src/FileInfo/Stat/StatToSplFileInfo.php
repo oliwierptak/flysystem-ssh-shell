@@ -1,6 +1,6 @@
 <?php
 
-namespace League\Flysystem\SshShell\FileInfo\Stat;
+namespace Phuxtil\Flysystem\SshShell\FileInfo\Stat;
 
 use Phuxtil\Chmod\ChmodFacadeInterface;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;

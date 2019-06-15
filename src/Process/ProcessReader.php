@@ -1,13 +1,13 @@
 <?php
 
-namespace League\Flysystem\SshShell\Process;
+namespace Phuxtil\Flysystem\SshShell\Process;
 
 use Symfony\Component\Process\Process;
 
 class ProcessReader
 {
     /**
-     * @var \League\Flysystem\SshShell\Process\Ssh
+     * @var \Phuxtil\Flysystem\SshShell\Process\Ssh
      */
     protected $process;
 

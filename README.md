@@ -1,14 +1,12 @@
 # flysystem-ssh-shell
 
 Flysystem adapter for SSH shell.
-
-<!--- 
+ 
 ### Installation
 
 ```bash
-composer require league/flysystem-ssh-shell 
+composer require phuxtil/flysystem-ssh-shell 
 ```
--->
 
 ### Requirements
 

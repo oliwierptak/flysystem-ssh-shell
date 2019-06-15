@@ -1,17 +1,17 @@
 <?php
 
-namespace League\Flysystem\SshShell;
+namespace Phuxtil\Flysystem\SshShell;
 
-use League\Flysystem\SshShell\Adapter\AdapterWriter;
-use League\Flysystem\SshShell\Adapter\SshShellAdapter;
-use League\Flysystem\SshShell\Adapter\AdapterReader;
-use League\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter;
-use League\Flysystem\SshShell\FileInfo\Stat\StatToSplFileInfo;
-use League\Flysystem\SshShell\Process\Authentication\Authenticator;
-use League\Flysystem\SshShell\Process\ProcessReader;
-use League\Flysystem\SshShell\Process\ProcessWriter;
-use League\Flysystem\SshShell\Process\Scp;
-use League\Flysystem\SshShell\Process\Ssh;
+use Phuxtil\Flysystem\SshShell\Adapter\AdapterWriter;
+use Phuxtil\Flysystem\SshShell\Adapter\SshShellAdapter;
+use Phuxtil\Flysystem\SshShell\Adapter\AdapterReader;
+use Phuxtil\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter;
+use Phuxtil\Flysystem\SshShell\FileInfo\Stat\StatToSplFileInfo;
+use Phuxtil\Flysystem\SshShell\Process\Authentication\Authenticator;
+use Phuxtil\Flysystem\SshShell\Process\ProcessReader;
+use Phuxtil\Flysystem\SshShell\Process\ProcessWriter;
+use Phuxtil\Flysystem\SshShell\Process\Scp;
+use Phuxtil\Flysystem\SshShell\Process\Ssh;
 use Phuxtil\Chmod\ChmodFacade;
 use Phuxtil\Chmod\ChmodFacadeInterface;
 use Phuxtil\Find\FindFacade;

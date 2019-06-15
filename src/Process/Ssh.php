@@ -1,20 +1,20 @@
 <?php
 
-namespace League\Flysystem\SshShell\Process;
+namespace Phuxtil\Flysystem\SshShell\Process;
 
-use League\Flysystem\SshShell\SshShellConfigurator;
-use League\Flysystem\SshShell\Process\Authentication\Authenticator;
+use Phuxtil\Flysystem\SshShell\SshShellConfigurator;
+use Phuxtil\Flysystem\SshShell\Process\Authentication\Authenticator;
 use Symfony\Component\Process\Process;
 
 class Ssh
 {
     /**
-     * @var \League\Flysystem\SshShell\Process\Authentication\Authenticator
+     * @var \Phuxtil\Flysystem\SshShell\Process\Authentication\Authenticator
      */
     protected $authenticator;
 
     /**
-     * @var \League\Flysystem\SshShell\SshShellConfigurator
+     * @var \Phuxtil\Flysystem\SshShell\SshShellConfigurator
      */
     protected $configurator;
 

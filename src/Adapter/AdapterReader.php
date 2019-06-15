@@ -1,9 +1,9 @@
 <?php
 
-namespace League\Flysystem\SshShell\Adapter;
+namespace Phuxtil\Flysystem\SshShell\Adapter;
 
-use League\Flysystem\SshShell\FileInfo\Stat\StatToSplFileInfo;
-use League\Flysystem\SshShell\Process\ProcessReader;
+use Phuxtil\Flysystem\SshShell\FileInfo\Stat\StatToSplFileInfo;
+use Phuxtil\Flysystem\SshShell\Process\ProcessReader;
 use Phuxtil\Find\FindConfigurator;
 use Phuxtil\Find\FindFacadeInterface;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
@@ -12,7 +12,7 @@ use Phuxtil\Stat\StatFacadeInterface;
 class AdapterReader
 {
     /**
-     * @var \League\Flysystem\SshShell\Process\ProcessReader
+     * @var \Phuxtil\Flysystem\SshShell\Process\ProcessReader
      */
     protected $reader;
 
@@ -27,7 +27,7 @@ class AdapterReader
     protected $findFacade;
 
     /**
-     * @var \League\Flysystem\SshShell\FileInfo\Stat\StatToSplFileInfo
+     * @var \Phuxtil\Flysystem\SshShell\FileInfo\Stat\StatToSplFileInfo
      */
     protected $statToSplFileInfo;
 

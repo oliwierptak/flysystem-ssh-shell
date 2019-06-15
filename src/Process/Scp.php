@@ -1,6 +1,6 @@
 <?php
 
-namespace League\Flysystem\SshShell\Process;
+namespace Phuxtil\Flysystem\SshShell\Process;
 
 class Scp extends Ssh
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace TestsFlysystemSshShell\Functional\Adapter;
+namespace TestsPhuxtilFlysystemSshShell\Functional\Adapter;
 
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
-use League\Flysystem\SshShell\SshShellConfigurator;
-use League\Flysystem\SshShell\SshShellFactory;
+use Phuxtil\Flysystem\SshShell\SshShellConfigurator;
+use Phuxtil\Flysystem\SshShell\SshShellFactory;
 use PHPUnit\Framework\TestCase;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
 
@@ -25,7 +25,7 @@ class AdapterWriterTest extends TestCase
     const REMOTE_INVALID_NAME = 'doesnotexist/remote.txt';
 
     /**
-     * @var \League\Flysystem\SshShell\SshShellConfigurator
+     * @var \Phuxtil\Flysystem\SshShell\SshShellConfigurator
      */
     protected $configurator;
 

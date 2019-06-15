@@ -1,29 +1,29 @@
 <?php
 
-namespace League\Flysystem\SshShell\Adapter;
+namespace Phuxtil\Flysystem\SshShell\Adapter;
 
 use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Adapter\CanOverwriteFiles;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
-use League\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter;
+use Phuxtil\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter;
 use League\Flysystem\Util;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
 
 class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, AdapterInterface
 {
     /**
-     * @var \League\Flysystem\SshShell\Adapter\AdapterReader
+     * @var \Phuxtil\Flysystem\SshShell\Adapter\AdapterReader
      */
     protected $reader;
 
     /**
-     * @var \League\Flysystem\SshShell\Adapter\AdapterWriter
+     * @var \Phuxtil\Flysystem\SshShell\Adapter\AdapterWriter
      */
     protected $writer;
 
     /**
-     * @var \League\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter
+     * @var \Phuxtil\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter
      */
     protected $visibility;
 
@@ -72,7 +72,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
      * @param Config $config Config object
      *
      * @return array|false false on failure file meta data on success
-     * @see \League\Flysystem\SshShell\Adapter\SshShellAdapter::write()
+     * @see \Phuxtil\Flysystem\SshShell\Adapter\SshShellAdapter::write()
      *
      */
     public function writeStream($path, $resource, Config $config)
@@ -115,7 +115,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
      * @param Config $config Config object
      *
      * @return array|false false on failure file meta data on success
-     * @see \League\Flysystem\SshShell\Adapter\SshShellAdapter::update()
+     * @see \Phuxtil\Flysystem\SshShell\Adapter\SshShellAdapter::update()
      *
      */
     public function updateStream($path, $resource, Config $config)
@@ -281,7 +281,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
      * @param string $path
      *
      * @return array|false
-     * @see \League\Flysystem\SshShell\Adapter\SshShellAdapter::read()
+     * @see \Phuxtil\Flysystem\SshShell\Adapter\SshShellAdapter::read()
      *
      */
     public function readStream($path)

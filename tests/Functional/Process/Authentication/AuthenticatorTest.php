@@ -1,9 +1,9 @@
 <?php
 
-namespace TestsFlysystemSshShell\Functional\Process\Authentication;
+namespace TestsPhuxtilFlysystemSshShell\Functional\Process\Authentication;
 
-use League\Flysystem\SshShell\SshShellConfigurator;
-use League\Flysystem\SshShell\Process\Authentication\Authenticator;
+use Phuxtil\Flysystem\SshShell\SshShellConfigurator;
+use Phuxtil\Flysystem\SshShell\Process\Authentication\Authenticator;
 use PHPUnit\Framework\TestCase;
 
 class AuthenticatorTest extends TestCase

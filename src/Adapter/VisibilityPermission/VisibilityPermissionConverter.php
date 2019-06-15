@@ -1,6 +1,6 @@
 <?php
 
-namespace League\Flysystem\SshShell\Adapter\VisibilityPermission;
+namespace Phuxtil\Flysystem\SshShell\Adapter\VisibilityPermission;
 
 class VisibilityPermissionConverter
 {

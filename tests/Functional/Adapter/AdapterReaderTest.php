@@ -1,10 +1,10 @@
 <?php
 
-namespace TestsFlysystemSshShell\Functional\Adapter;
+namespace TestsPhuxtilFlysystemSshShell\Functional\Adapter;
 
 use League\Flysystem\AdapterInterface;
-use League\Flysystem\SshShell\SshShellConfigurator;
-use League\Flysystem\SshShell\SshShellFactory;
+use Phuxtil\Flysystem\SshShell\SshShellConfigurator;
+use Phuxtil\Flysystem\SshShell\SshShellFactory;
 use PHPUnit\Framework\TestCase;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
 use SplFileInfo;
@@ -20,7 +20,7 @@ class AdapterReaderTest extends TestCase
     const REMOTE_PATH_NAME = '/';
 
     /**
-     * @var \League\Flysystem\SshShell\SshShellConfigurator
+     * @var \Phuxtil\Flysystem\SshShell\SshShellConfigurator
      */
     protected $configurator;
 
@@ -35,7 +35,7 @@ class AdapterReaderTest extends TestCase
     protected $expectedFileInfo;
 
     /**
-     * @var \League\Flysystem\SshShell\Adapter\SshShellAdapter
+     * @var \Phuxtil\Flysystem\SshShell\Adapter\SshShellAdapter
      */
     protected $adapter;
 

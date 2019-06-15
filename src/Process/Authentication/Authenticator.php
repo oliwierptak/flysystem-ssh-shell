@@ -1,9 +1,9 @@
 <?php
 
-namespace League\Flysystem\SshShell\Process\Authentication;
+namespace Phuxtil\Flysystem\SshShell\Process\Authentication;
 
-use League\Flysystem\SshShell\Process\Authentication\Type\PrivateKey;
-use League\Flysystem\SshShell\SshShellConfigurator;
+use Phuxtil\Flysystem\SshShell\Process\Authentication\Type\PrivateKey;
+use Phuxtil\Flysystem\SshShell\SshShellConfigurator;
 
 class Authenticator
 {
@@ -13,7 +13,7 @@ class Authenticator
     ];
 
     /**
-     * @param \League\Flysystem\SshShell\SshShellConfigurator $configurator
+     * @param \Phuxtil\Flysystem\SshShell\SshShellConfigurator $configurator
      *
      * @return string
      * @throws \InvalidArgumentException
@@ -26,7 +26,7 @@ class Authenticator
     }
 
     /**
-     * @param \League\Flysystem\SshShell\SshShellConfigurator $configurator
+     * @param \Phuxtil\Flysystem\SshShell\SshShellConfigurator $configurator
      *
      * @return AbstractAuthentication
      * @throws \InvalidArgumentException
@@ -43,7 +43,7 @@ class Authenticator
 
         $className = $this->authenticationTypes[$configurator->getAuthType()];
 
-        /** @var \League\Flysystem\SshShell\Process\Authentication\AbstractAuthentication $auth */
+        /** @var \Phuxtil\Flysystem\SshShell\Process\Authentication\AbstractAuthentication $auth */
         return new $className($configurator);
     }
 }
