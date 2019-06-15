@@ -2,18 +2,18 @@
 
 namespace League\Flysystem\SshShell\FileInfo\Stat;
 
-use Phuxtil\Chmod\ChmodFacade;
+use Phuxtil\Chmod\ChmodFacadeInterface;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
 use Phuxtil\Stat\Output\Stat;
 
 class StatToSplFileInfo
 {
     /**
-     * @var \Phuxtil\Chmod\ChmodFacade
+     * @var \Phuxtil\Chmod\ChmodFacadeInterface
      */
     protected $chmodFacade;
 
-    public function __construct(ChmodFacade $chmodFacade)
+    public function __construct(ChmodFacadeInterface $chmodFacade)
     {
         $this->chmodFacade = $chmodFacade;
     }

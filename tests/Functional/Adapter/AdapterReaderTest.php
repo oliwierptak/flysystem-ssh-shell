@@ -205,8 +205,9 @@ class AdapterReaderTest extends TestCase
 
         //links are resolved by find, however fileperms() and filetype() will return link info
         if ($expected->isLink()) {
-            $this->assertEquals('file', $info->getType());
-            $this->assertEquals(false, $info->isLink());
+            $linkTargetInfo = new SplFileInfo($expected->getLinkTarget());
+            $this->assertEquals($linkTargetInfo->getType(), $info->getType());
+            $this->assertEquals($linkTargetInfo->isLink(), $info->isLink());
         }
         else {
             $this->assertEquals($expected->getType(), $info->getType());

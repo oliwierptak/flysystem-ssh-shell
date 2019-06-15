@@ -7,7 +7,7 @@ use League\Flysystem\Adapter\CanOverwriteFiles;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
 use League\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter;
-use League\Flysystem\Util\MimeType as FlysystemMimeType;
+use League\Flysystem\Util;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
 
 class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, AdapterInterface
@@ -357,14 +357,11 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
 
     protected function prepareMetadataResult(VirtualSplFileInfo $metadata): array
     {
-        $data['visibility'] = $this->visibility->toVisibility($metadata->getPerms(), $metadata->getType());
-        $data['timestamp'] = $metadata->getMTime();
+        $result['visibility'] = $this->visibility->toVisibility($metadata->getPerms(), $metadata->getType());
+        $result['timestamp'] = $metadata->getMTime();
+        $result['mimetype'] = Util::guessMimeType($metadata->getPathname(), '');
 
-        if (!$metadata->isDir()) {
-            $data['mimetype'] = FlysystemMimeType::detectByFilename($metadata->getPathname());
-        }
-
-        return array_merge($data, $metadata->toArray());
+        return array_merge($result, $metadata->toArray());
     }
 
     /**

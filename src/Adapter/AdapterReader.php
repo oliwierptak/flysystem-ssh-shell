@@ -5,9 +5,9 @@ namespace League\Flysystem\SshShell\Adapter;
 use League\Flysystem\SshShell\FileInfo\Stat\StatToSplFileInfo;
 use League\Flysystem\SshShell\Process\ProcessReader;
 use Phuxtil\Find\FindConfigurator;
-use Phuxtil\Find\FindFacade;
+use Phuxtil\Find\FindFacadeInterface;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
-use Phuxtil\Stat\StatFacade;
+use Phuxtil\Stat\StatFacadeInterface;
 
 class AdapterReader
 {
@@ -22,17 +22,24 @@ class AdapterReader
     protected $statFacade;
 
     /**
+     * @var FindFacadeInterface
+     */
+    protected $findFacade;
+
+    /**
      * @var \League\Flysystem\SshShell\FileInfo\Stat\StatToSplFileInfo
      */
     protected $statToSplFileInfo;
 
     public function __construct(
         ProcessReader $reader,
-        StatFacade $statFacade,
+        StatFacadeInterface $statFacade,
+        FindFacadeInterface $findFacade,
         StatToSplFileInfo $statToSplFileInfo
     ) {
         $this->reader = $reader;
         $this->statFacade = $statFacade;
+        $this->findFacade = $findFacade;
         $this->statToSplFileInfo = $statToSplFileInfo;
     }
 
@@ -45,13 +52,7 @@ class AdapterReader
     {
         $process = $this->reader->stat($path);
         if (!$process->isSuccessful()) {
-            return (new VirtualSplFileInfo($path))
-                ->setWritable(false)
-                ->setReadable(false)
-                ->setExecutable(false)
-                ->setFile(false)
-                ->setDir(false)
-                ->setLink(false);
+            return (new VirtualSplFileInfo($path));
         }
 
         $stat = $this->statFacade->process($process->getOutput());
@@ -71,7 +72,6 @@ class AdapterReader
 
     public function listContents(string $directory, bool $recursive = false): array
     {
-        $findFacade = new FindFacade();
         $configurator = new FindConfigurator();
 
         $process = $this->reader->listContents(
@@ -86,6 +86,6 @@ class AdapterReader
         }
 
         $configurator->setFindOutput($process->getOutput());
-        return $findFacade->process($configurator);
+        return $this->findFacade->process($configurator);
     }
 }

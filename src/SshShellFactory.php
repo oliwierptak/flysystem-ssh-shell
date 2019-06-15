@@ -6,7 +6,6 @@ use League\Flysystem\SshShell\Adapter\AdapterWriter;
 use League\Flysystem\SshShell\Adapter\SshShellAdapter;
 use League\Flysystem\SshShell\Adapter\AdapterReader;
 use League\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter;
-use League\Flysystem\SshShell\FileInfo\SshFileInfo;
 use League\Flysystem\SshShell\FileInfo\Stat\StatToSplFileInfo;
 use League\Flysystem\SshShell\Process\Authentication\Authenticator;
 use League\Flysystem\SshShell\Process\ProcessReader;
@@ -14,19 +13,14 @@ use League\Flysystem\SshShell\Process\ProcessWriter;
 use League\Flysystem\SshShell\Process\Scp;
 use League\Flysystem\SshShell\Process\Ssh;
 use Phuxtil\Chmod\ChmodFacade;
+use Phuxtil\Chmod\ChmodFacadeInterface;
+use Phuxtil\Find\FindFacade;
+use Phuxtil\Find\FindFacadeInterface;
 use Phuxtil\Stat\StatFacade;
+use Phuxtil\Stat\StatFacadeInterface;
 
-class SshShellFactory
+class SshShellFactory implements SshShellFactoryInterface
 {
-    public function createSshFileInfo(string $path, Configurator $configurator): SshFileInfo
-    {
-        return new SshFileInfo(
-            $path,
-            $this->createAdapterReader($configurator),
-            $this->createProcessReader($configurator)
-        );
-    }
-
     public function createAdapter(Configurator $configurator): SshShellAdapter
     {
         $adapter = new SshShellAdapter(
@@ -40,16 +34,17 @@ class SshShellFactory
         return $adapter;
     }
 
-    public function createAdapterReader(Configurator $configurator): AdapterReader
+    protected function createAdapterReader(Configurator $configurator): AdapterReader
     {
         return new AdapterReader(
             $this->createProcessReader($configurator),
             $this->createStatFacade(),
+            $this->createFindFacade(),
             $this->createStatToSplFileInfoConverter()
         );
     }
 
-    public function createAdapterWriter(Configurator $configurator): AdapterWriter
+    protected function createAdapterWriter(Configurator $configurator): AdapterWriter
     {
         return new AdapterWriter(
             $this->createProcessWriter($configurator),
@@ -93,14 +88,19 @@ class SshShellFactory
         return new Authenticator();
     }
 
-    protected function createStatFacade(): StatFacade
+    protected function createStatFacade(): StatFacadeInterface
     {
         return new StatFacade();
     }
 
-    protected function createChmodFacade(): ChmodFacade
+    protected function createChmodFacade(): ChmodFacadeInterface
     {
         return new ChmodFacade();
+    }
+
+    protected function createFindFacade(): FindFacadeInterface
+    {
+        return new FindFacade();
     }
 
     protected function createStatToSplFileInfoConverter()
