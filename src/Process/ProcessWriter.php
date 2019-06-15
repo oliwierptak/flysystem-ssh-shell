@@ -66,22 +66,6 @@ class ProcessWriter
         );
     }
 
-    public function listContents(string $directory, bool $recursive): Process
-    {
-        $maxDepth = '';
-        if (!$recursive) {
-            $maxDepth = '-maxdepth 1';
-        }
-
-        return $this->ssh->execute(
-            'find %s %s -print',
-            [
-                $directory,
-                $maxDepth,
-            ]
-        );
-    }
-
     public function copy(string $source, string $destination): Process
     {
         $command = sprintf(

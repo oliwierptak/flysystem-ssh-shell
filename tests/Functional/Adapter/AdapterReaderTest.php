@@ -63,6 +63,10 @@ class AdapterReaderTest extends TestCase
 
         //re-create remote file so we can assert and return it from ssh calls
         $this->setupRemoteFile();
+
+        \clearstatcache(true, static::REMOTE_PATH);
+        \clearstatcache(true, static::REMOTE_FILE);
+        \clearstatcache(true, static::REMOTE_FILE_LINK);
     }
 
     protected function setupRemoteFile()
@@ -184,6 +188,17 @@ class AdapterReaderTest extends TestCase
         }
     }
 
+    public function test_listContents_recursively()
+    {
+        $result = $this->adapter->listContents(static::REMOTE_PATH_NAME, true);
+
+        foreach ($result as $output) {
+            /** @var \SplFileInfo $output */
+            $expected = new \SplFileInfo($output->getPathname());
+            $this->assertOutput($expected, $output);
+        }
+    }
+
     protected function assertOutput(\SplFileInfo $expected, \SplFileInfo $info)
     {
         $octal = substr(sprintf('%o', fileperms($expected->getPathname())), -4);
@@ -192,7 +207,8 @@ class AdapterReaderTest extends TestCase
         if ($expected->isLink()) {
             $this->assertEquals('file', $info->getType());
             $this->assertEquals(false, $info->isLink());
-        } else {
+        }
+        else {
             $this->assertEquals($expected->getType(), $info->getType());
             $this->assertEquals($expected->isLink(), $info->isLink());
         }
