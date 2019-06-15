@@ -224,7 +224,7 @@ class AdapterReaderTest extends TestCase
         $this->assertEquals($expected->getBasename(), $info->getBasename());
         $this->assertEquals($expected->getExtension(), $info->getExtension());
         $this->assertEquals($expected->getRealPath(), $info->getRealPath());
-        $this->assertEquals($expected->getATime(), $info->getATime());
+        $this->assertLessThanOrEqual($expected->getATime(), $info->getATime());
         $this->assertEquals($expected->getMTime(), $info->getMTime());
         $this->assertEquals($expected->getCTime(), $info->getCTime());
         $this->assertEquals($expected->isFile(), $info->isFile());
