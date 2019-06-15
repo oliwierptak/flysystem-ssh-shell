@@ -17,7 +17,7 @@ class AdapterReader
     protected $reader;
 
     /**
-     * @var \Phuxtil\Stat\StatFacade
+     * @var \Phuxtil\Stat\StatFacadeInterface
      */
     protected $statFacade;
 

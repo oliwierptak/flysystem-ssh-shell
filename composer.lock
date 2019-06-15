@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "95ef13591852119447fcdac59ddc9f37",
+    "content-hash": "0239f8a1a8a6b0d4369916eef1948878",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -939,12 +939,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/oliwierptak/phuxtil-find.git",
-                "reference": "52c46de2ae351bec72685994428efbb1d1247136"
+                "reference": "6491498057b897a3488bd8155550ffecf22cc4cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oliwierptak/phuxtil-find/zipball/52c46de2ae351bec72685994428efbb1d1247136",
-                "reference": "52c46de2ae351bec72685994428efbb1d1247136",
+                "url": "https://api.github.com/repos/oliwierptak/phuxtil-find/zipball/6491498057b897a3488bd8155550ffecf22cc4cc",
+                "reference": "6491498057b897a3488bd8155550ffecf22cc4cc",
                 "shasum": ""
             },
             "require": {
@@ -967,7 +967,7 @@
                 "MIT"
             ],
             "description": "Easy interface for output of 'find' unix command",
-            "time": "2019-06-14T19:12:36+00:00"
+            "time": "2019-06-14T19:38:21+00:00"
         },
         {
             "name": "phuxtil/splfileinfo",
@@ -1009,12 +1009,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/oliwierptak/phuxtil-stat.git",
-                "reference": "cad87c2896021caf614843de5125779f09467143"
+                "reference": "4d2ae053c864c53e07cb44e6f35fdc78d6678a49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oliwierptak/phuxtil-stat/zipball/cad87c2896021caf614843de5125779f09467143",
-                "reference": "cad87c2896021caf614843de5125779f09467143",
+                "url": "https://api.github.com/repos/oliwierptak/phuxtil-stat/zipball/4d2ae053c864c53e07cb44e6f35fdc78d6678a49",
+                "reference": "4d2ae053c864c53e07cb44e6f35fdc78d6678a49",
                 "shasum": ""
             },
             "require": {
@@ -1035,7 +1035,7 @@
                 "MIT"
             ],
             "description": "Easy interface for output of 'stat' unix command",
-            "time": "2019-06-12T09:58:19+00:00"
+            "time": "2019-06-15T14:20:34+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
