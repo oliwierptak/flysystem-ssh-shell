@@ -73,8 +73,8 @@ _Note: To revert to default setting, unset private key value._
 <?php
 
 use League\Flysystem\Filesystem;
-use League\Flysystem\SshShell\SshShellConfigurator;
-use League\Flysystem\SshShell\SshShellFactory;
+use Phuxtil\Flysystem\SshShell\SshShellConfigurator;
+use Phuxtil\Flysystem\SshShell\SshShellFactory;
 
 \error_reporting(\E_ALL);
 
@@ -82,10 +82,11 @@ include __DIR__ . '/vendor/autoload.php';
 
 $configurator = (new SshShellConfigurator())
     ->setRoot('/tmp/remote_fs')
-    ->setUser('user')
-    ->setHost('host');
+    ->setUser('root')
+    ->setHost('pup-data-container');
 
 $adapter = (new SshShellFactory())->createAdapter($configurator);
+
 $filesystem = new Filesystem($adapter);
 
 ```
