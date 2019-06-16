@@ -21,6 +21,7 @@ class AdapterReaderTest extends TestCase
 
     const SSH_USER = \TESTS_SSH_USER;
     const SSH_HOST = \TESTS_SSH_HOST;
+    const SSH_PORT = \TESTS_SSH_PORT;
 
     /**
      * @var \Phuxtil\Flysystem\SshShell\SshShellConfigurator
@@ -57,7 +58,8 @@ class AdapterReaderTest extends TestCase
         $this->configurator = (new SshShellConfigurator())
             ->setRoot(static::REMOTE_PATH)
             ->setUser(static::SSH_USER)
-            ->setHost(static::SSH_HOST);
+            ->setHost(static::SSH_HOST)
+            ->setPort(static::SSH_PORT);
 
         $this->factory = new SshShellFactory();
         $this->adapter = $this->factory->createAdapter(

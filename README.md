@@ -102,4 +102,4 @@ Set values of env variables for `TESTS_SSH_USER` and `TESTS_SSH_HOST`, or run te
 TESTS_SSH_USER=... TESTS_SSH_HOST=... vendor/bin/phpunit
 ``` 
 
-_Note: Default value for `TESTS_SSH_HOST` is 22._
+_Note: Default value for `TESTS_SSH_PORT` is 22._
