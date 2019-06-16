@@ -19,6 +19,9 @@ class AdapterReaderTest extends TestCase
     const REMOTE_NAME = '/remote.txt';
     const REMOTE_PATH_NAME = '/';
 
+    const SSH_USER = \TESTS_SSH_USER;
+    const SSH_HOST = \TESTS_SSH_HOST;
+
     /**
      * @var \Phuxtil\Flysystem\SshShell\SshShellConfigurator
      */
@@ -45,7 +48,7 @@ class AdapterReaderTest extends TestCase
         $this->setupRemoteFile();
 
         $expectedData = (new VirtualSplFileInfo(static::REMOTE_FILE))
-            ->toArray((new SplFileInfo(static::REMOTE_FILE)));
+            ->toArray();
 
         @unlink(static::REMOTE_FILE);
         $this->expectedFileInfo = (new VirtualSplFileInfo(static::REMOTE_FILE))
@@ -53,8 +56,8 @@ class AdapterReaderTest extends TestCase
 
         $this->configurator = (new SshShellConfigurator())
             ->setRoot(static::REMOTE_PATH)
-            ->setUser('root')
-            ->setHost('pup-data-container');
+            ->setUser(static::SSH_USER)
+            ->setHost(static::SSH_HOST);
 
         $this->factory = new SshShellFactory();
         $this->adapter = $this->factory->createAdapter(
@@ -181,10 +184,12 @@ class AdapterReaderTest extends TestCase
     {
         $result = $this->adapter->listContents(static::REMOTE_PATH_NAME);
 
-        foreach ($result as $output) {
-            /** @var \SplFileInfo $output */
-            $expected = new \SplFileInfo($output->getPathname());
-            $this->assertOutput($expected, $output);
+        foreach ($result as $item) {
+            $expected = new \SplFileInfo($item['pathname']);
+            $info = (new VirtualSplFileInfo($item['pathname']))
+                ->fromArray($item);
+
+            $this->assertOutput($expected, $info);
         }
     }
 
@@ -192,10 +197,12 @@ class AdapterReaderTest extends TestCase
     {
         $result = $this->adapter->listContents(static::REMOTE_PATH_NAME, true);
 
-        foreach ($result as $output) {
-            /** @var \SplFileInfo $output */
-            $expected = new \SplFileInfo($output->getPathname());
-            $this->assertOutput($expected, $output);
+        foreach ($result as $item) {
+            $expected = new \SplFileInfo($item['pathname']);
+            $info = (new VirtualSplFileInfo($item['pathname']))
+                ->fromArray($item);
+
+            $this->assertOutput($expected, $info);
         }
     }
 
@@ -205,13 +212,15 @@ class AdapterReaderTest extends TestCase
 
         //links are resolved by find, however fileperms() and filetype() will return link info
         if ($expected->isLink()) {
-            $linkTargetInfo = new SplFileInfo($expected->getLinkTarget());
+            $linkTargetInfo = new SplFileInfo($expected->getRealPath());
             $this->assertEquals($linkTargetInfo->getType(), $info->getType());
             $this->assertEquals($linkTargetInfo->isLink(), $info->isLink());
+            $this->assertEquals($expected->getPathname(), $info->getRealPath());
         }
         else {
             $this->assertEquals($expected->getType(), $info->getType());
             $this->assertEquals($expected->isLink(), $info->isLink());
+            $this->assertEquals($expected->getRealPath(), $info->getRealPath());
         }
 
         $this->assertEquals($octal, $info->getPerms());
@@ -224,7 +233,6 @@ class AdapterReaderTest extends TestCase
         $this->assertEquals($expected->getPath(), $info->getPath());
         $this->assertEquals($expected->getBasename(), $info->getBasename());
         $this->assertEquals($expected->getExtension(), $info->getExtension());
-        $this->assertEquals($expected->getRealPath(), $info->getRealPath());
         $this->assertLessThanOrEqual($expected->getATime(), $info->getATime());
         $this->assertEquals($expected->getMTime(), $info->getMTime());
         $this->assertEquals($expected->getCTime(), $info->getCTime());

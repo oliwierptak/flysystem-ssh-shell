@@ -8,11 +8,14 @@ use PHPUnit\Framework\TestCase;
 
 class AuthenticatorTest extends TestCase
 {
+    const SSH_USER = \TESTS_SSH_USER;
+    const SSH_HOST = \TESTS_SSH_HOST;
+
     public function test_generate_by_config()
     {
         $configurator = (new SshShellConfigurator())
-            ->setUser('root')
-            ->setHost('pup-data-container');
+            ->setUser(static::SSH_HOST)
+            ->setHost(static::SSH_USER);
 
         $authenticator = new Authenticator();
         $auth = $authenticator->generate($configurator);

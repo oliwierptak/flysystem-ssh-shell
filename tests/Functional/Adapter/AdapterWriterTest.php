@@ -24,6 +24,9 @@ class AdapterWriterTest extends TestCase
     const REMOTE_INVALID_PATH = self::REMOTE_PATH . 'doesnotexist/remote.txt';
     const REMOTE_INVALID_NAME = 'doesnotexist/remote.txt';
 
+    const SSH_USER = \TESTS_SSH_USER;
+    const SSH_HOST = \TESTS_SSH_HOST;
+
     /**
      * @var \Phuxtil\Flysystem\SshShell\SshShellConfigurator
      */
@@ -45,8 +48,8 @@ class AdapterWriterTest extends TestCase
 
         $this->configurator = (new SshShellConfigurator())
             ->setRoot(static::REMOTE_PATH)
-            ->setUser('root')
-            ->setHost('pup-data-container');
+            ->setUser(static::SSH_USER)
+            ->setHost(static::SSH_HOST);
 
         $this->factory = new SshShellFactory();
     }

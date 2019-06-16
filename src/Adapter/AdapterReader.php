@@ -70,6 +70,12 @@ class AdapterReader
         return $process->getOutput();
     }
 
+    /**
+     * @param string $directory
+     * @param bool $recursive
+     *
+     * @return \Phuxtil\SplFileInfo\VirtualSplFileInfo[]
+     */
     public function listContents(string $directory, bool $recursive = false): array
     {
         $configurator = new FindConfigurator();
@@ -86,6 +92,7 @@ class AdapterReader
         }
 
         $configurator->setFindOutput(trim($process->getOutput()));
+
         return $this->findFacade->process($configurator);
     }
 }

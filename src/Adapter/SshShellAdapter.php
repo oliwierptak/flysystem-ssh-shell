@@ -269,8 +269,14 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
     public function listContents($directory = '', $recursive = false)
     {
         $directory = $this->applyPathPrefix($directory);
+        $contents = $this->reader->listContents($directory, $recursive);
 
-        return $this->reader->listContents($directory, $recursive);
+        $result = [];
+        foreach ($contents as $fileInfo) {
+            $result[] = $fileInfo->toArray();
+        }
+
+        return $result;
     }
 
     /**

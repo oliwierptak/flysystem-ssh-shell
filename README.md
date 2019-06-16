@@ -90,3 +90,16 @@ $adapter = (new SshShellFactory())->createAdapter($configurator);
 $filesystem = new Filesystem($adapter);
 
 ```
+
+
+### TDD
+
+Default root directory on remote host is `/tmp/remote_fs`.
+
+Set values of env variables for `TESTS_SSH_USER` and `TESTS_SSH_HOST`, or run tests with:
+
+```shell
+TESTS_SSH_USER=... TESTS_SSH_HOST=... vendor/bin/phpunit
+``` 
+
+_Note: Default value for `TESTS_SSH_HOST` is 22._

@@ -9,13 +9,12 @@
         "league/flysystem": "^1.0",
         "symfony/process": "^3",
         "phpunit/phpunit": "^6",
-        "phuxtil/find": "@dev",
-        "phuxtil/stat": "@dev"
+        "phuxtil/find": "^1",
+        "phuxtil/stat": "^1"
     },
     "require-dev": {
         "symfony/var-dumper": "^3",
-        "ext-posix": "*",
-        "phpstan/phpstan": "^0.9.2"
+        "ext-posix": "*"
     },
     "autoload": {
         "psr-4": {
