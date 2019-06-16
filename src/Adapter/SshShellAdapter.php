@@ -63,21 +63,26 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
     }
 
     /**
-     * Not supported, use write() instead.
-     *
-     * {@inheritDoc}
-     *
      * @param string $path
      * @param resource $resource
      * @param Config $config Config object
      *
      * @return array|false false on failure file meta data on success
-     * @see \Phuxtil\Flysystem\SshShell\Adapter\SshShellAdapter::write()
-     *
      */
     public function writeStream($path, $resource, Config $config)
     {
-        return false;
+        $location = $this->applyPathPrefix($path);
+        $result = $this->writer->writeStream($location, $resource);
+        if (!$result) {
+            return false;
+        }
+
+        $metadata = $this->updatePathVisibility($path, $config);
+        if (!$metadata) {
+            $metadata = $this->getMetadata($path);
+        }
+
+        return $metadata;
     }
 
     /**

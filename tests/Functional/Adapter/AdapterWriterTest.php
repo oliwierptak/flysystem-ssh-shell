@@ -178,7 +178,20 @@ class AdapterWriterTest extends TestCase
         $this->assertFileExists(static::REMOTE_NEWPATH_FILE);
     }
 
-    public function test_write_with_visibility()
+    public function test_write_should_return_false()
+    {
+        $this->configurator->setPort(0);
+        $adapter = $this->factory->createAdapter(
+            $this->configurator
+        );
+
+        $config = new Config();
+        $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_writeStream_should_set_visibility()
     {
         $adapter = $this->factory->createAdapter(
             $this->configurator

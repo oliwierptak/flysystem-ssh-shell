@@ -32,12 +32,28 @@ class AdapterWriter
             return false;
         }
 
-        return $this->writeContents($path, $contents);
+        return $this->writeString($path, $contents);
+    }
+
+    /**
+     * @param string $path
+     * @param resource $resource
+     *
+     * @return bool
+     */
+    public function writeStream(string $path, $resource): bool
+    {
+        $createPathProcess = $this->writer->mkdir(dirname($path));
+        if (!$createPathProcess->isSuccessful()) {
+            return false;
+        }
+
+        return $this->writeStreamData($path, $resource);
     }
 
     public function update(string $path, string $contents): bool
     {
-        return $this->writeContents($path, $contents);
+        return $this->writeString($path, $contents);
     }
 
     /**
@@ -45,7 +61,7 @@ class AdapterWriter
      *
      * @return string
      */
-    protected function createTempFile(string $contents): string
+    protected function createTempContent(string $contents): string
     {
         $filename = \tempnam(\sys_get_temp_dir(), time());
         \file_put_contents($filename, $contents, LOCK_EX);
@@ -83,9 +99,34 @@ class AdapterWriter
      *
      * @return bool
      */
-    protected function writeContents(string $path, string $contents): bool
+    protected function writeString(string $path, string $contents): bool
     {
-        $filename = $this->createTempFile($contents);
+        $filename = $this->createTempContent($contents);
+        $process = $this->writer->write(
+            $filename,
+            $path
+        );
+
+        @unlink($filename);
+
+        return $process->isSuccessful();
+    }
+
+    /**
+     * @param string $path
+     * @param resource $resource
+     *
+     * @return bool
+     */
+    protected function writeStreamData(string $path, $resource): bool
+    {
+        $filename = \tempnam(\sys_get_temp_dir(), time());
+        $stream = fopen($filename, 'w+b');
+
+        if (!$stream || stream_copy_to_stream($resource, $stream) === false || !fclose($stream)) {
+            return false;
+        }
+
         $process = $this->writer->write(
             $filename,
             $path
