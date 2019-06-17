@@ -5,7 +5,7 @@ namespace TestsPhuxtilFlysystemSshShell\Functional\Adapter;
 use League\Flysystem\AdapterInterface;
 use TestsPhuxtilFlysystemSshShell\Helper\AbstractTestCase;
 
-class VisbilityTest extends AbstractTestCase
+class VisibilityTest extends AbstractTestCase
 {
     public function test_setVisibility_to_private()
     {
