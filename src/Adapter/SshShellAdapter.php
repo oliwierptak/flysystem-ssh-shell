@@ -25,16 +25,16 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
     /**
      * @var \Phuxtil\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter
      */
-    protected $visibility;
+    protected $visibilityConverter;
 
     public function __construct(
         AdapterReader $reader,
         AdapterWriter $writer,
-        VisibilityPermissionConverter $visibility
+        VisibilityPermissionConverter $visibilityConverter
     ) {
         $this->reader = $reader;
         $this->writer = $writer;
-        $this->visibility = $visibility;
+        $this->visibilityConverter = $visibilityConverter;
     }
 
     /**
@@ -225,7 +225,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
             return false;
         }
 
-        $perms = $this->visibility->toPermission($visibility, $metadata->getType());
+        $perms = $this->visibilityConverter->toPermission($visibility, $metadata->getType());
         $metadata->setPerms($perms);
 
         return $this->prepareMetadataResult($metadata);
@@ -285,19 +285,29 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
     }
 
     /**
-     * Not supported, use read() instead.
-     *
-     * {@inheritDoc}
-     *
      * @param string $path
      *
      * @return array|false
-     * @see \Phuxtil\Flysystem\SshShell\Adapter\SshShellAdapter::read()
-     *
      */
     public function readStream($path)
     {
-        return false;
+        $location = $this->applyPathPrefix($path);
+        $metadata = $this->reader->getMetadata($location);
+
+        $result = $this->prepareMetadataResult($metadata);
+        $result['stream'] = $this->reader->readStream($location);
+
+        return $result;
+
+        //return array_merge($result, $metadata->toArray());
+
+        /*        return [
+                    'type' => 'file',
+                    'path' => $path,
+                    'stream' => $this->reader->readStream($path)
+                ];
+
+                return array_merge($result, $metadata->toArray());*/
     }
 
     /**
@@ -368,7 +378,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
 
     protected function prepareMetadataResult(VirtualSplFileInfo $metadata): array
     {
-        $result['visibility'] = $this->visibility->toVisibility($metadata->getPerms(), $metadata->getType());
+        $result['visibility'] = $this->visibilityConverter->toVisibility($metadata->getPerms(), $metadata->getType());
         $result['timestamp'] = $metadata->getMTime();
         $result['mimetype'] = Util::guessMimeType($metadata->getPathname(), '');
 

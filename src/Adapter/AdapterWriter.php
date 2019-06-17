@@ -32,7 +32,7 @@ class AdapterWriter
             return false;
         }
 
-        return $this->writeString($path, $contents);
+        return $this->writeStringData($path, $contents);
     }
 
     /**
@@ -53,20 +53,7 @@ class AdapterWriter
 
     public function update(string $path, string $contents): bool
     {
-        return $this->writeString($path, $contents);
-    }
-
-    /**
-     * @param string $contents
-     *
-     * @return string
-     */
-    protected function createTempContent(string $contents): string
-    {
-        $filename = \tempnam(\sys_get_temp_dir(), time());
-        \file_put_contents($filename, $contents, LOCK_EX);
-
-        return $filename;
+        return $this->writeStringData($path, $contents);
     }
 
     public function mkdir(string $path, string $visibility): bool
@@ -89,50 +76,6 @@ class AdapterWriter
         }
 
         $process = $this->writer->setVisibility($path, $perms);
-
-        return $process->isSuccessful();
-    }
-
-    /**
-     * @param string $path
-     * @param string $contents
-     *
-     * @return bool
-     */
-    protected function writeString(string $path, string $contents): bool
-    {
-        $filename = $this->createTempContent($contents);
-        $process = $this->writer->write(
-            $filename,
-            $path
-        );
-
-        @unlink($filename);
-
-        return $process->isSuccessful();
-    }
-
-    /**
-     * @param string $path
-     * @param resource $resource
-     *
-     * @return bool
-     */
-    protected function writeStreamData(string $path, $resource): bool
-    {
-        $filename = \tempnam(\sys_get_temp_dir(), time());
-        $stream = fopen($filename, 'w+b');
-
-        if (!$stream || stream_copy_to_stream($resource, $stream) === false || !fclose($stream)) {
-            return false;
-        }
-
-        $process = $this->writer->write(
-            $filename,
-            $path
-        );
-
-        @unlink($filename);
 
         return $process->isSuccessful();
     }
@@ -179,5 +122,71 @@ class AdapterWriter
         $process = $this->writer->rmdir($path);
 
         return $process->isSuccessful();
+    }
+
+    /**
+     * @param string $path
+     * @param string $contents
+     *
+     * @return bool
+     */
+    protected function writeStringData(string $path, string $contents): bool
+    {
+        $resource = $this->createTempResource($contents);
+
+        return $this->writeStreamData(
+            $path,
+            $resource
+        );
+    }
+
+    /**
+     * @param string $path
+     * @param resource|false $resource
+     *
+     * @return bool
+     */
+    protected function writeStreamData(string $path, $resource): bool
+    {
+        if (!$resource) {
+            return false;
+        }
+
+        $filename = \tempnam(\sys_get_temp_dir(), \time()) . '.tmp';
+        $stream = fopen($filename, 'w+b');
+        $result = $stream && stream_copy_to_stream($resource, $stream);
+
+        if ($result === false || !fclose($stream)) {
+            return false;
+        }
+
+        $process = $this->writer->write(
+            $filename,
+            $path
+        );
+
+        @unlink($filename);
+
+        return $process->isSuccessful();
+    }
+
+    /**
+     * @param string $contents
+     *
+     * @return resource|false
+     */
+    protected function createTempResource(string $contents)
+    {
+        $resource = tmpfile();
+        $result = fwrite($resource, $contents);
+        if ($result === false) {
+            return false;
+        }
+
+        if (!rewind($resource)) {
+            return false;
+        }
+
+        return $resource;
     }
 }

@@ -26,7 +26,7 @@ class ProcessWriter
     {
         $command = sprintf(
             '%s %s',
-            $this->formatPath($source),
+            $this->formatPath($source, false),
             $this->formatPath($destination, true)
         );
 
@@ -70,8 +70,8 @@ class ProcessWriter
     {
         $command = sprintf(
             '%s %s',
-            $this->formatPath($source),
-            $this->formatPath($destination)
+            $this->formatPath($source, false),
+            $this->formatPath($destination, true)
         );
 
         return $this->scp->execute($command, []);
@@ -103,10 +103,10 @@ class ProcessWriter
         );
     }
 
-    protected function formatPath(string $path, bool $isRemoteSource = true): string
+    protected function formatPath(string $path, bool $prefixUserAndHost): string
     {
         $pattern = '<USER_AT_HOST>:%s';
-        if (!$isRemoteSource) {
+        if (!$prefixUserAndHost) {
             $pattern = '%s';
         }
 

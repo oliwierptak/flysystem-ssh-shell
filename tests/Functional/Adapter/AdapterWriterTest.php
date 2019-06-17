@@ -4,124 +4,25 @@ namespace TestsPhuxtilFlysystemSshShell\Functional\Adapter;
 
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
-use Phuxtil\Flysystem\SshShell\SshShellConfigurator;
-use Phuxtil\Flysystem\SshShell\SshShellFactory;
-use PHPUnit\Framework\TestCase;
-use Phuxtil\SplFileInfo\VirtualSplFileInfo;
+use TestsPhuxtilFlysystemSshShell\Helper\AbstractTestCase;
 
-class AdapterWriterTest extends TestCase
+class AdapterWriterTest extends AbstractTestCase
 {
-    const LOCAL_PATH = \TESTS_FIXTURE_DIR . 'local_fs/';
-    const LOCAL_FILE = self::LOCAL_PATH . 'test/local.txt';
-    const LOCAL_NAME = 'test/local.txt';
-    const REMOTE_PATH = '/tmp/remote_fs/';
-    const REMOTE_FILE = self::REMOTE_PATH . 'remote.txt';
-    const REMOTE_FILE_LINK = self::REMOTE_PATH . 'remote_link.txt';
-    const REMOTE_NAME = '/remote.txt';
-    const REMOTE_NEWPATH = self::REMOTE_PATH . 'newpath/';
-    const REMOTE_NEWPATH_FILE = self::REMOTE_PATH . 'newpath/remote.txt';
-    const REMOTE_NEWPATH_NAME = 'newpath/remote.txt';
-    const REMOTE_INVALID_PATH = self::REMOTE_PATH . 'doesnotexist/remote.txt';
-    const REMOTE_INVALID_NAME = 'doesnotexist/remote.txt';
-
-    const SSH_USER = \TESTS_SSH_USER;
-    const SSH_HOST = \TESTS_SSH_HOST;
-    const SSH_PORT = \TESTS_SSH_PORT;
-
-    /**
-     * @var \Phuxtil\Flysystem\SshShell\SshShellConfigurator
-     */
-    protected $configurator;
-
-    /**
-     * @var SshShellFactory
-     */
-    protected $factory;
-
-    /**
-     * @var VirtualSplFileInfo
-     */
-    protected $expectedFileInfo;
-
-    protected function setUp()
+    public function test_writeStream_should_set_visibility()
     {
-        $this->cleanup();
-
-        $this->configurator = (new SshShellConfigurator())
-            ->setRoot(static::REMOTE_PATH)
-            ->setUser(static::SSH_USER)
-            ->setHost(static::SSH_HOST)
-            ->setPort(static::SSH_PORT);
-
-        $this->factory = new SshShellFactory();
-    }
-
-    protected function setupRemoteFile()
-    {
-        @mkdir(\dirname(static::REMOTE_FILE), 0777, true);
-
-        \file_put_contents(
-            static::REMOTE_FILE,
-            \file_get_contents(static::LOCAL_FILE)
+        $adapter = $this->factory->createAdapter(
+            $this->configurator
         );
 
-        \symlink(static::REMOTE_FILE, static::REMOTE_FILE_LINK);
-    }
+        $config = new Config();
+        $config->set('visibility', AdapterInterface::VISIBILITY_PRIVATE);
 
-    protected function setupLocalFile()
-    {
-        \file_put_contents(
-            static::REMOTE_FILE,
-            \file_get_contents(static::LOCAL_FILE)
-        );
+        $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
 
-        \symlink(static::REMOTE_FILE, static::REMOTE_FILE_LINK);
-    }
-
-    protected function setupRemoteTempFile(): string
-    {
-        $filename = static::REMOTE_PATH . time() . 'file.txt';
-        @mkdir(\dirname($filename), 0777, true);
-
-        \file_put_contents(
-            $filename,
-            \file_get_contents(static::LOCAL_FILE)
-        );
-
-        return $filename;
-    }
-
-    protected function setupRemoteTempDir(): string
-    {
-        $dir = static::REMOTE_PATH . time();
-        @mkdir($dir, 0777, true);
-
-        return $dir;
-    }
-
-    protected function tearDown()
-    {
-        $this->cleanup();
-    }
-
-    protected function cleanup()
-    {
-        @unlink(static::REMOTE_FILE);
-        @unlink(static::REMOTE_FILE_LINK);
-        @unlink(static::REMOTE_NEWPATH_FILE);
-        @unlink(static::REMOTE_INVALID_PATH);
-
-        @rmdir(
-            dirname(
-                static::REMOTE_FILE
-            )
-        );
-
-        @rmdir(
-            dirname(
-                static::REMOTE_NEWPATH_FILE
-            )
-        );
+        $this->assertPathInfo($result);
+        $this->assertResult($result, AdapterInterface::VISIBILITY_PRIVATE, '0600');
+        $this->assertEquals('FooBaroo', \file_get_contents(static::REMOTE_NEWPATH_FILE));
+        $this->assertFileExists(static::REMOTE_NEWPATH_FILE);
     }
 
     public function test_write_should_create_path()
@@ -133,19 +34,8 @@ class AdapterWriterTest extends TestCase
         $config = new Config();
         $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
 
-        $this->assertEquals($result['visibility'], AdapterInterface::VISIBILITY_PRIVATE);
-        $this->assertEquals($result['path'] . '/', static::REMOTE_NEWPATH);
-        $this->assertEquals($result['pathname'], static::REMOTE_NEWPATH_FILE);
-        $this->assertEquals($result['type'], 'file');
-        $this->assertEquals($result['perms'], '0600');
-
-        $this->assertFalse($result['link']);
-        $this->assertFalse($result['dir']);
-        $this->assertTrue($result['file']);
-        $this->assertTrue($result['writable']);
-        $this->assertTrue($result['readable']);
-        $this->assertfalse($result['executable']);
-
+        $this->assertPathInfo($result);
+        $this->assertResult($result);
         $this->assertEquals('FooBaroo', \file_get_contents(static::REMOTE_NEWPATH_FILE));
         $this->assertFileExists(static::REMOTE_NEWPATH_FILE);
     }
@@ -161,19 +51,8 @@ class AdapterWriterTest extends TestCase
         $config = new Config();
         $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
 
-        $this->assertEquals($result['visibility'], AdapterInterface::VISIBILITY_PRIVATE);
-        $this->assertEquals($result['path'] . '/', static::REMOTE_NEWPATH);
-        $this->assertEquals($result['pathname'], static::REMOTE_NEWPATH_FILE);
-        $this->assertEquals($result['type'], 'file');
-        $this->assertEquals($result['perms'], '0600');
-
-        $this->assertFalse($result['link']);
-        $this->assertFalse($result['dir']);
-        $this->assertTrue($result['file']);
-        $this->assertTrue($result['writable']);
-        $this->assertTrue($result['readable']);
-        $this->assertfalse($result['executable']);
-
+        $this->assertPathInfo($result);
+        $this->assertResult($result);
         $this->assertEquals('FooBaroo', \file_get_contents(static::REMOTE_NEWPATH_FILE));
         $this->assertFileExists(static::REMOTE_NEWPATH_FILE);
     }
@@ -189,33 +68,6 @@ class AdapterWriterTest extends TestCase
         $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
 
         $this->assertFalse($result);
-    }
-
-    public function test_writeStream_should_set_visibility()
-    {
-        $adapter = $this->factory->createAdapter(
-            $this->configurator
-        );
-
-        $config = new Config();
-        $config->set('visibility', AdapterInterface::VISIBILITY_PUBLIC);
-        $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
-
-        $this->assertEquals($result['visibility'], AdapterInterface::VISIBILITY_PUBLIC);
-        $this->assertEquals($result['path'] . '/', static::REMOTE_NEWPATH);
-        $this->assertEquals($result['pathname'], static::REMOTE_NEWPATH_FILE);
-        $this->assertEquals($result['type'], 'file');
-        $this->assertEquals($result['perms'], '0644');
-
-        $this->assertFalse($result['link']);
-        $this->assertFalse($result['dir']);
-        $this->assertTrue($result['file']);
-        $this->assertTrue($result['writable']);
-        $this->assertTrue($result['readable']);
-        $this->assertFalse($result['executable']);
-
-        $this->assertEquals('FooBaroo', \file_get_contents(static::REMOTE_NEWPATH_FILE));
-        $this->assertFileExists(static::REMOTE_NEWPATH_FILE);
     }
 
     public function test_mkdir()
@@ -254,19 +106,8 @@ class AdapterWriterTest extends TestCase
         $config = new Config();
         $result = $adapter->update(static::REMOTE_NAME, 'FooBaroo', $config);
 
-        $this->assertEquals($result['visibility'], AdapterInterface::VISIBILITY_PUBLIC);
-        $this->assertEquals($result['path'] . '/', static::REMOTE_PATH);
-        $this->assertEquals($result['pathname'], static::REMOTE_FILE);
-        $this->assertEquals($result['type'], 'file');
-        $this->assertEquals($result['perms'], '0644');
-
-        $this->assertFalse($result['link']);
-        $this->assertFalse($result['dir']);
-        $this->assertTrue($result['file']);
-        $this->assertTrue($result['writable']);
-        $this->assertTrue($result['readable']);
-        $this->assertFalse($result['executable']);
-
+        $this->assertPathInfo($result, static::REMOTE_PATH, static::REMOTE_FILE);
+        $this->assertResult($result);
         $this->assertEquals('FooBaroo', \file_get_contents(static::REMOTE_FILE));
         $this->assertFileExists(static::REMOTE_FILE);
     }

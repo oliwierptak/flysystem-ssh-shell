@@ -3,41 +3,12 @@
 namespace TestsPhuxtilFlysystemSshShell\Functional\Adapter;
 
 use League\Flysystem\AdapterInterface;
-use Phuxtil\Flysystem\SshShell\SshShellConfigurator;
-use Phuxtil\Flysystem\SshShell\SshShellFactory;
-use PHPUnit\Framework\TestCase;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
 use SplFileInfo;
+use TestsPhuxtilFlysystemSshShell\Helper\AbstractTestCase;
 
-class AdapterReaderTest extends TestCase
+class AdapterReaderTest extends AbstractTestCase
 {
-    const LOCAL_PATH = \TESTS_FIXTURE_DIR . 'local_fs/';
-    const REMOTE_PATH = '/tmp/remote_fs/';
-    const LOCAL_FILE = self::LOCAL_PATH . 'test/local.txt';
-    const REMOTE_FILE = self::REMOTE_PATH . 'remote.txt';
-    const REMOTE_FILE_LINK = self::REMOTE_PATH . 'remote_link.txt';
-    const REMOTE_NAME = '/remote.txt';
-    const REMOTE_PATH_NAME = '/';
-
-    const SSH_USER = \TESTS_SSH_USER;
-    const SSH_HOST = \TESTS_SSH_HOST;
-    const SSH_PORT = \TESTS_SSH_PORT;
-
-    /**
-     * @var \Phuxtil\Flysystem\SshShell\SshShellConfigurator
-     */
-    protected $configurator;
-
-    /**
-     * @var SshShellFactory
-     */
-    protected $factory;
-
-    /**
-     * @var VirtualSplFileInfo
-     */
-    protected $expectedFileInfo;
-
     /**
      * @var \Phuxtil\Flysystem\SshShell\Adapter\SshShellAdapter
      */
@@ -45,55 +16,13 @@ class AdapterReaderTest extends TestCase
 
     protected function setUp()
     {
-        @mkdir(static::REMOTE_PATH);
-        $this->setupRemoteFile();
+        parent::setUp();
 
-        $expectedData = (new VirtualSplFileInfo(static::REMOTE_FILE))
-            ->toArray();
-
-        @unlink(static::REMOTE_FILE);
-        $this->expectedFileInfo = (new VirtualSplFileInfo(static::REMOTE_FILE))
-            ->fromArray($expectedData);
-
-        $this->configurator = (new SshShellConfigurator())
-            ->setRoot(static::REMOTE_PATH)
-            ->setUser(static::SSH_USER)
-            ->setHost(static::SSH_HOST)
-            ->setPort(static::SSH_PORT);
-
-        $this->factory = new SshShellFactory();
         $this->adapter = $this->factory->createAdapter(
             $this->configurator
         );
 
-        //re-create remote file so we can assert and return it from ssh calls
         $this->setupRemoteFile();
-
-        \clearstatcache(true, static::REMOTE_PATH);
-        \clearstatcache(true, static::REMOTE_FILE);
-        \clearstatcache(true, static::REMOTE_FILE_LINK);
-    }
-
-    protected function setupRemoteFile()
-    {
-        @\file_put_contents(
-            static::REMOTE_FILE,
-            \file_get_contents(static::LOCAL_FILE)
-        );
-
-        @\symlink(static::REMOTE_FILE, static::REMOTE_FILE_LINK);
-    }
-
-    protected function tearDown()
-    {
-        @rmdir(
-            dirname(
-                static::REMOTE_FILE
-            )
-        );
-
-        @unlink(static::REMOTE_FILE);
-        @unlink(static::REMOTE_FILE_LINK);
     }
 
     public function test_has()

@@ -71,6 +71,24 @@ class AdapterReader
     }
 
     /**
+     * @param string $path
+     *
+     * @return resource|false
+     */
+    public function readStream(string $path)
+    {
+        $contents = $this->read($path);
+        if ($contents === '') {
+            return false;
+        }
+
+        $resource = tmpfile();
+        fwrite($resource, $contents);
+
+        return $resource;
+    }
+
+    /**
      * @param string $directory
      * @param bool $recursive
      *
