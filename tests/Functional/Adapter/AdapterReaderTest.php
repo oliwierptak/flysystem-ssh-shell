@@ -69,6 +69,13 @@ class AdapterReaderTest extends AbstractTestCase
         );
     }
 
+    public function test_getMetadata_should_return_false()
+    {
+        $metadata = $this->adapter->getMetadata(static::REMOTE_INVALID_NAME);
+
+        $this->assertFalse($metadata);
+    }
+
     public function test_getSize()
     {
         $this->assertEquals(
@@ -103,12 +110,22 @@ class AdapterReaderTest extends AbstractTestCase
 
     public function test_read()
     {
-        $result = $this->adapter->read(static::REMOTE_FILE);
+        $result = $this->adapter->read(static::REMOTE_NAME);
 
         $this->assertEquals(
             \file_get_contents(static::REMOTE_FILE),
             $result['contents']
         );
+    }
+
+    public function test_read_should_return_false_when_ssh_command_fails()
+    {
+        $this->configurator->setPort(0);
+        $adapter = $this->factory->createAdapter($this->configurator);
+
+        $result = $adapter->read(static::REMOTE_NAME);
+
+        $this->assertFalse($result);
     }
 
     public function test_listContents()

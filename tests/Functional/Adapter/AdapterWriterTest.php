@@ -20,7 +20,7 @@ class AdapterWriterTest extends AbstractTestCase
         $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
 
         $this->assertPathInfo($result);
-        $this->assertResult($result, AdapterInterface::VISIBILITY_PRIVATE, '0600');
+        $this->assertFileResult($result, AdapterInterface::VISIBILITY_PRIVATE, '0600');
         $this->assertEquals('FooBaroo', \file_get_contents(static::REMOTE_NEWPATH_FILE));
         $this->assertFileExists(static::REMOTE_NEWPATH_FILE);
     }
@@ -35,7 +35,7 @@ class AdapterWriterTest extends AbstractTestCase
         $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
 
         $this->assertPathInfo($result);
-        $this->assertResult($result);
+        $this->assertFileResult($result);
         $this->assertEquals('FooBaroo', \file_get_contents(static::REMOTE_NEWPATH_FILE));
         $this->assertFileExists(static::REMOTE_NEWPATH_FILE);
     }
@@ -52,7 +52,7 @@ class AdapterWriterTest extends AbstractTestCase
         $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
 
         $this->assertPathInfo($result);
-        $this->assertResult($result);
+        $this->assertFileResult($result);
         $this->assertEquals('FooBaroo', \file_get_contents(static::REMOTE_NEWPATH_FILE));
         $this->assertFileExists(static::REMOTE_NEWPATH_FILE);
     }
@@ -68,6 +68,38 @@ class AdapterWriterTest extends AbstractTestCase
         $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
 
         $this->assertFalse($result);
+    }
+
+    public function test_update_should_not_change_meta()
+    {
+        $this->setupRemoteFile();
+
+        $adapter = $this->factory->createAdapter(
+            $this->configurator
+        );
+
+        $config = new Config();
+        $result = $adapter->update(static::REMOTE_NAME, 'FooBaroo', $config);
+
+        $this->assertPathInfo($result, static::REMOTE_PATH, static::REMOTE_FILE);
+        $this->assertFileResult($result);
+        $this->assertEquals('FooBaroo', \file_get_contents(static::REMOTE_FILE));
+        $this->assertFileExists(static::REMOTE_FILE);
+    }
+
+    public function test_update_should_return_false_when_path_does_not_exist()
+    {
+        $this->assertFileNotExists(static::REMOTE_INVALID_PATH);
+
+        $adapter = $this->factory->createAdapter(
+            $this->configurator
+        );
+
+        $config = new Config();
+        $result = $adapter->update(static::REMOTE_INVALID_NAME, 'FooBaroo', $config);
+
+        $this->assertFalse($result);
+        $this->assertFileNotExists(static::REMOTE_INVALID_PATH);
     }
 
     public function test_mkdir()
@@ -95,38 +127,6 @@ class AdapterWriterTest extends AbstractTestCase
         $this->assertDirectoryExists(static::REMOTE_NEWPATH);
     }
 
-    public function test_update_should_not_change_meta()
-    {
-        $this->setupRemoteFile();
-
-        $adapter = $this->factory->createAdapter(
-            $this->configurator
-        );
-
-        $config = new Config();
-        $result = $adapter->update(static::REMOTE_NAME, 'FooBaroo', $config);
-
-        $this->assertPathInfo($result, static::REMOTE_PATH, static::REMOTE_FILE);
-        $this->assertResult($result);
-        $this->assertEquals('FooBaroo', \file_get_contents(static::REMOTE_FILE));
-        $this->assertFileExists(static::REMOTE_FILE);
-    }
-
-    public function test_update_should_return_false_when_path_does_not_exist()
-    {
-        $this->assertFileNotExists(static::REMOTE_INVALID_PATH);
-
-        $adapter = $this->factory->createAdapter(
-            $this->configurator
-        );
-
-        $config = new Config();
-        $result = $adapter->update(static::REMOTE_INVALID_NAME, 'FooBaroo', $config);
-
-        $this->assertFalse($result);
-        $this->assertFileNotExists(static::REMOTE_INVALID_PATH);
-    }
-
     public function test_copy()
     {
         $this->setupRemoteFile();
@@ -142,8 +142,26 @@ class AdapterWriterTest extends AbstractTestCase
         $this->assertFileExists(static::REMOTE_NEWPATH_FILE);
     }
 
+    public function test_copy_should_return_false_when_ssh_command_fails()
+    {
+        $this->setupRemoteFile();
+        $this->assertFileNotExists(static::REMOTE_NEWPATH_FILE);
+
+        $this->configurator->setPort(0);
+        $adapter = $this->factory->createAdapter(
+            $this->configurator
+        );
+
+        $result = $adapter->copy(static::REMOTE_NAME, static::REMOTE_NEWPATH_NAME);
+
+        $this->assertFalse($result);
+        $this->assertFileNotExists(static::REMOTE_NEWPATH_FILE);
+    }
+
     public function test_rename()
     {
+        $this->setupRemoteFile();
+
         $fileToMove = $this->setupRemoteTempFile();
         $fileToMoveName = \basename($fileToMove);
         $this->assertFileNotExists(static::REMOTE_NEWPATH_FILE);
@@ -156,7 +174,26 @@ class AdapterWriterTest extends AbstractTestCase
 
         $this->assertTrue($result);
         $this->assertFileExists(static::REMOTE_NEWPATH_FILE);
-        $this->assertFileNotExists($fileToMoveName);
+        $this->assertFileNotExists($fileToMove);
+    }
+
+    public function test_rename_should_return_false_when_ssh_process_fails()
+    {
+        $fileToMove = $this->setupRemoteTempFile();
+        $fileToMoveName = \basename($fileToMove);
+
+        $this->assertFileNotExists(static::REMOTE_NEWPATH_FILE);
+
+        $this->configurator->setPort(0);
+        $adapter = $this->factory->createAdapter(
+            $this->configurator
+        );
+
+        $result = $adapter->rename($fileToMoveName, static::REMOTE_NEWPATH_NAME);
+
+        $this->assertFalse($result);
+        $this->assertFileExists($fileToMove);
+        $this->assertFileNotExists(static::REMOTE_NEWPATH_FILE);
     }
 
     public function test_delete()

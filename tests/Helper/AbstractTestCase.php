@@ -119,7 +119,7 @@ abstract class AbstractTestCase extends TestCase
         return $dir;
     }
 
-    protected function assertResult(
+    protected function assertFileResult(
         array $result,
         string $visisibility = AdapterInterface::VISIBILITY_PUBLIC,
         $permissions = '0644'
@@ -134,6 +134,23 @@ abstract class AbstractTestCase extends TestCase
         $this->assertTrue($result['writable']);
         $this->assertTrue($result['readable']);
         $this->assertFalse($result['executable']);
+    }
+
+    protected function assertDirResult(
+        array $result,
+        string $visisibility = AdapterInterface::VISIBILITY_PUBLIC,
+        $permissions = '0755'
+    ) {
+        $this->assertEquals($result['visibility'], $visisibility);
+        $this->assertEquals($result['type'], 'dir');
+        $this->assertEquals($result['perms'], $permissions);
+
+        $this->assertFalse($result['link']);
+        $this->assertTrue($result['dir']);
+        $this->assertFalse($result['file']);
+        $this->assertTrue($result['writable']);
+        $this->assertTrue($result['readable']);
+        $this->assertTrue($result['executable']);
     }
 
     protected function assertContent(string $contentFile = self::REMOTE_NEWPATH_FILE)

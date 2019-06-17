@@ -16,11 +16,6 @@ class ProcessReader
         $this->process = $process;
     }
 
-    public function find(string $path, string $prefix = '', string $postfix = ''): Process
-    {
-        return $this->process->execute('%s find %s %s', [$prefix, $path, $postfix]);
-    }
-
     public function read(string $path, string $prefix = '', string $postfix = ''): Process
     {
         return $this->process->execute('%s cat %s %s', [$prefix, $path, $postfix]);

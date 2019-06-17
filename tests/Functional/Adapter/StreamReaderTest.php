@@ -17,7 +17,7 @@ class StreamReaderTest extends AbstractTestCase
         $result = $adapter->readStream(static::REMOTE_NAME);
 
         $this->assertPathInfo($result, static::REMOTE_PATH, static::REMOTE_FILE);
-        $this->assertResult($result);
+        $this->assertFileResult($result);
         $this->assertContent(static::REMOTE_FILE);
 
         $this->assertTrue(\is_resource($result['stream']));

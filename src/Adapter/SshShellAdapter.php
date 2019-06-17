@@ -98,7 +98,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
     {
         $location = $this->applyPathPrefix($path);
         $metadata = $this->reader->getMetadata($location);
-        if (!$metadata->isReadable() && $metadata->isVirtual()) {
+        if ($metadata->isVirtual()) {
             return false;
         }
 
@@ -111,21 +111,15 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
     }
 
     /**
-     * Not supported, use update() instead.
-     *
-     * {@inheritDoc}
-     *
      * @param string $path
      * @param resource $resource
      * @param Config $config Config object
      *
      * @return array|false false on failure file meta data on success
-     * @see \Phuxtil\Flysystem\SshShell\Adapter\SshShellAdapter::update()
-     *
      */
     public function updateStream($path, $resource, Config $config)
     {
-        return false;
+        return $this->writeStream($path, $resource, $config);
     }
 
     /**
@@ -257,8 +251,11 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
     {
         $location = $this->applyPathPrefix($path);
         $metadata = $this->reader->getMetadata($location);
+        if ($metadata->isVirtual()) {
+            return false;
+        }
 
-        $result['contents'] = $this->reader->read($path);
+        $result['contents'] = $this->reader->read($location);
 
         return array_merge($result, $metadata->toArray());
     }
