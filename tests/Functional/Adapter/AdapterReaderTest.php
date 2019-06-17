@@ -128,6 +128,13 @@ class AdapterReaderTest extends AbstractTestCase
         $this->assertFalse($result);
     }
 
+    public function test_read_should_return_false_when_invalid_path()
+    {
+        $result = $this->adapter->read(static::REMOTE_INVALID_NAME);
+
+        $this->assertFalse($result);
+    }
+
     public function test_listContents()
     {
         $result = $this->adapter->listContents(static::REMOTE_PATH_NAME);
@@ -139,6 +146,16 @@ class AdapterReaderTest extends AbstractTestCase
 
             $this->assertOutput($expected, $info);
         }
+    }
+
+    public function test_listContents_should_return_empty_array_when_ssh_command_fails()
+    {
+        $this->configurator->setPort(0);
+        $adapter = $this->factory->createAdapter($this->configurator);
+
+        $result = $adapter->listContents(static::REMOTE_PATH_NAME);
+
+        $this->assertCount(0, $result);
     }
 
     public function test_listContents_recursively()

@@ -33,4 +33,19 @@ class AuthenticatorTest extends TestCase
 
         $this->assertEquals('-i ~/.ssh/id_rsa.data_container', $auth);
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Unknown authentication type: invalid
+     */
+    public function test_generate_by_config_should_throw_exception()
+    {
+        $configurator = (new SshShellConfigurator())
+            ->setUser(static::SSH_HOST)
+            ->setHost(static::SSH_USER)
+            ->setAuthType('invalid');
+
+        $authenticator = new Authenticator();
+        $authenticator->generate($configurator);
+    }
 }

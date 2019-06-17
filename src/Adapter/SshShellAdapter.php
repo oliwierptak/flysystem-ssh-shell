@@ -214,6 +214,9 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
     {
         $location = $this->applyPathPrefix($path);
         $metadata = $this->reader->getMetadata($location);
+        if ($metadata->isVirtual()) {
+            return false;
+        }
 
         if (!$this->writer->setVisibility($location, $visibility, $metadata->getType())) {
             return false;
