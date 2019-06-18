@@ -114,6 +114,31 @@ class AdapterWriterTest extends AbstractTestCase
         $this->assertFileExists(static::REMOTE_FILE);
     }
 
+    public function test_update_should_change_visibility()
+    {
+        $this->setupRemoteFile();
+
+        $adapter = $this->factory->createAdapter(
+            $this->configurator
+        );
+
+        $config = new Config();
+        $config->set('visibility', AdapterInterface::VISIBILITY_PRIVATE);
+        $result = $adapter->update(static::REMOTE_NAME, 'FooBaroo', $config);
+
+        $expected = [
+            'contents' => static::TEST_CONTENTS,
+            'type' => 'file',
+            'size' => strlen(static::TEST_CONTENTS),
+            'path' => static::REMOTE_NAME,
+            'visibility' => AdapterInterface::VISIBILITY_PRIVATE,
+        ];
+
+        $this->assertEquals($expected, $result);
+        $this->assertEquals('FooBaroo', \file_get_contents(static::REMOTE_FILE));
+        $this->assertFileExists(static::REMOTE_FILE);
+    }
+
     public function test_update_should_return_false_when_path_does_not_exist()
     {
         $this->assertFileNotExists(static::REMOTE_INVALID_PATH);
