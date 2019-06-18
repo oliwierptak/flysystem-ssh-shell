@@ -60,11 +60,16 @@ class AdapterReader
         return $this->statToSplFileInfo->convert($stat);
     }
 
-    public function read(string $path): string
+    /**
+     * @param string $path
+     *
+     * @return bool|string
+     */
+    public function read(string $path)
     {
         $process = $this->reader->read($path);
         if (!$process->isSuccessful()) {
-            return '';
+            return false;
         }
 
         return $process->getOutput();
@@ -73,17 +78,19 @@ class AdapterReader
     /**
      * @param string $path
      *
-     * @return resource|false
+     * @return array|false
      */
     public function readStream(string $path)
     {
         $contents = $this->read($path);
-        if ($contents === '') {
+        if ($contents === false) {
             return false;
         }
 
         $resource = tmpfile();
-        fwrite($resource, $contents);
+        if (!fwrite($resource, $contents)) {
+            return false;
+        }
 
         return $resource;
     }

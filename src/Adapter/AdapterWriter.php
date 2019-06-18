@@ -25,7 +25,13 @@ class AdapterWriter
         $this->visibility = $visibility;
     }
 
-    public function write(string $path, string $contents): bool
+    /**
+     * @param string $path
+     * @param string $contents
+     *
+     * @return int|false filesize or false on error
+     */
+    public function write(string $path, string $contents)
     {
         $createPathProcess = $this->writer->mkdir(dirname($path));
         if (!$createPathProcess->isSuccessful()) {
@@ -39,9 +45,9 @@ class AdapterWriter
      * @param string $path
      * @param resource $resource
      *
-     * @return bool
+     * @return int|false filesize or false on error
      */
-    public function writeStream(string $path, $resource): bool
+    public function writeStream(string $path, $resource)
     {
         $createPathProcess = $this->writer->mkdir(dirname($path));
         if (!$createPathProcess->isSuccessful()) {
@@ -51,7 +57,13 @@ class AdapterWriter
         return $this->writeStreamData($path, $resource);
     }
 
-    public function update(string $path, string $contents): bool
+    /**
+     * @param string $path
+     * @param string $contents
+     *
+     * @return int|false filesize or false on error
+     */
+    public function update(string $path, string $contents)
     {
         return $this->writeStringData($path, $contents);
     }
@@ -128,9 +140,9 @@ class AdapterWriter
      * @param string $path
      * @param string $contents
      *
-     * @return bool
+     * @return int|false filesize or false on error
      */
-    protected function writeStringData(string $path, string $contents): bool
+    protected function writeStringData(string $path, string $contents)
     {
         $resource = $this->createTempResource($contents);
 
@@ -144,9 +156,9 @@ class AdapterWriter
      * @param string $path
      * @param resource|false $resource
      *
-     * @return bool
+     * @return int|false filesize or false on error
      */
-    protected function writeStreamData(string $path, $resource): bool
+    protected function writeStreamData(string $path, $resource)
     {
         if (!$resource) {
             return false;
@@ -165,9 +177,14 @@ class AdapterWriter
             $path
         );
 
+        $size = @\filesize($filename);
         @unlink($filename);
 
-        return $process->isSuccessful();
+        if (!$process->isSuccessful()) {
+            return false;
+        }
+
+        return $size;
     }
 
     /**

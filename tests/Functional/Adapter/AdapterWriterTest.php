@@ -8,6 +8,8 @@ use TestsPhuxtilFlysystemSshShell\Helper\AbstractTestCase;
 
 class AdapterWriterTest extends AbstractTestCase
 {
+    const TEST_CONTENTS = 'FooBaroo';
+
     public function test_writeStream_should_set_visibility()
     {
         $adapter = $this->factory->createAdapter(
@@ -19,8 +21,15 @@ class AdapterWriterTest extends AbstractTestCase
 
         $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
 
-        $this->assertPathInfo($result);
-        $this->assertFileResult($result, AdapterInterface::VISIBILITY_PRIVATE, '0600');
+        $expected = [
+            'contents' => static::TEST_CONTENTS,
+            'type' => 'file',
+            'size' => strlen(static::TEST_CONTENTS),
+            'path' => static::REMOTE_NEWPATH_NAME,
+            'visibility' => AdapterInterface::VISIBILITY_PRIVATE,
+        ];
+
+        $this->assertEquals($expected, $result);
         $this->assertEquals('FooBaroo', \file_get_contents(static::REMOTE_NEWPATH_FILE));
         $this->assertFileExists(static::REMOTE_NEWPATH_FILE);
     }
@@ -34,8 +43,14 @@ class AdapterWriterTest extends AbstractTestCase
         $config = new Config();
         $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
 
-        $this->assertPathInfo($result);
-        $this->assertFileResult($result);
+        $expected = [
+            'contents' => static::TEST_CONTENTS,
+            'type' => 'file',
+            'size' => strlen(static::TEST_CONTENTS),
+            'path' => static::REMOTE_NEWPATH_NAME,
+        ];
+
+        $this->assertEquals($expected, $result);
         $this->assertEquals('FooBaroo', \file_get_contents(static::REMOTE_NEWPATH_FILE));
         $this->assertFileExists(static::REMOTE_NEWPATH_FILE);
     }
@@ -51,8 +66,14 @@ class AdapterWriterTest extends AbstractTestCase
         $config = new Config();
         $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
 
-        $this->assertPathInfo($result);
-        $this->assertFileResult($result);
+        $expected = [
+            'contents' => static::TEST_CONTENTS,
+            'type' => 'file',
+            'size' => strlen(static::TEST_CONTENTS),
+            'path' => static::REMOTE_NEWPATH_NAME,
+        ];
+
+        $this->assertEquals($expected, $result);
         $this->assertEquals('FooBaroo', \file_get_contents(static::REMOTE_NEWPATH_FILE));
         $this->assertFileExists(static::REMOTE_NEWPATH_FILE);
     }
@@ -81,8 +102,14 @@ class AdapterWriterTest extends AbstractTestCase
         $config = new Config();
         $result = $adapter->update(static::REMOTE_NAME, 'FooBaroo', $config);
 
-        $this->assertPathInfo($result, static::REMOTE_PATH, static::REMOTE_FILE);
-        $this->assertFileResult($result);
+        $expected = [
+            'contents' => static::TEST_CONTENTS,
+            'type' => 'file',
+            'size' => strlen(static::TEST_CONTENTS),
+            'path' => static::REMOTE_NAME,
+        ];
+
+        $this->assertEquals($expected, $result);
         $this->assertEquals('FooBaroo', \file_get_contents(static::REMOTE_FILE));
         $this->assertFileExists(static::REMOTE_FILE);
     }
@@ -111,19 +138,12 @@ class AdapterWriterTest extends AbstractTestCase
         $config = new Config();
         $result = $adapter->createDir('/newpath/', $config);
 
-        $this->assertEquals($result['visibility'], AdapterInterface::VISIBILITY_PUBLIC);
-        $this->assertEquals($result['path'] . '/', static::REMOTE_PATH);
-        $this->assertEquals($result['pathname'] . '/', static::REMOTE_NEWPATH);
-        $this->assertEquals($result['type'], 'dir');
-        $this->assertEquals($result['perms'], '0755');
+        $expected = [
+            'path' => '/newpath/',
+            'type' => 'dir',
+        ];
 
-        $this->assertFalse($result['link']);
-        $this->assertTrue($result['dir']);
-        $this->assertFalse($result['file']);
-        $this->assertTrue($result['writable']);
-        $this->assertTrue($result['readable']);
-        $this->assertTrue($result['executable']);
-
+        $this->assertEquals($expected, $result);
         $this->assertDirectoryExists(static::REMOTE_NEWPATH);
     }
 
