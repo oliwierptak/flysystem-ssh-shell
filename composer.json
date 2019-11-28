@@ -4,16 +4,17 @@
     "type": "library",
     "license": "MIT",
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": "^7",
         "league/flysystem": "^1.0",
         "symfony/process": "^3",
-        "phpunit/phpunit": "^6",
         "phuxtil/find": "^1",
         "phuxtil/stat": "^1"
     },
     "require-dev": {
         "symfony/var-dumper": "^3",
+        "phpunit/phpunit": "^6",
         "ext-posix": "*"
     },
     "autoload": {

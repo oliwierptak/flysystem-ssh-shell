@@ -43,6 +43,7 @@ class Ssh
 
         $process = new Process($command);
         $process->run();
+        $process->wait();
 
         return $process;
     }
