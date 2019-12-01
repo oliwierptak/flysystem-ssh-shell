@@ -14,7 +14,7 @@ class AdapterReaderTest extends AbstractTestCase
      */
     protected $adapter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

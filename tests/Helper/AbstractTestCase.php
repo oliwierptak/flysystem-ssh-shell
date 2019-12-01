@@ -40,7 +40,7 @@ abstract class AbstractTestCase extends TestCase
      */
     protected $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configurator = (new SshShellConfigurator())
             ->setRoot(static::REMOTE_PATH)
@@ -51,7 +51,7 @@ abstract class AbstractTestCase extends TestCase
         $this->factory = new SshShellFactory();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanup();
     }
