@@ -8,6 +8,8 @@ Flysystem adapter for SSH shell.
 composer require phuxtil/flysystem-ssh-shell 
 ```
 
+_Note_: Use v1.x for compatibility with PHP v7.0.x
+
 ### Requirements
 
 The following programs installed and configured on local host:
