@@ -33,15 +33,15 @@ class Authenticator
      */
     protected function getAuthByType(SshShellConfigurator $configurator): AbstractAuthentication
     {
-        if (!isset($this->authenticationTypes[$configurator->getAuthType()])) {
-            throw new \InvalidArgumentException('Unknown authentication type: ' . $configurator->getAuthType());
+        if (!isset($this->authenticationTypes[$configurator->requireAuthType()])) {
+            throw new \InvalidArgumentException('Unknown authentication type: ' . $configurator->requireAuthType());
         }
 
-        if (trim($configurator->getPrivateKey()) !== '') {
+        if (trim($configurator->requirePrivateKey()) !== '') {
             $configurator->setAuthType(PrivateKey::TYPE);
         }
 
-        $className = $this->authenticationTypes[$configurator->getAuthType()];
+        $className = $this->authenticationTypes[$configurator->requireAuthType()];
 
         /** @var \Phuxtil\Flysystem\SshShell\Process\Authentication\AbstractAuthentication $auth */
         return new $className($configurator);

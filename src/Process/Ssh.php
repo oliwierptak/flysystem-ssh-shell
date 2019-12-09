@@ -41,7 +41,7 @@ class Ssh
     {
         $command = $this->prepareCommand($command);
 
-        $process = new Process($command);
+        $process = Process::fromShellCommandline($command);
         $process->run();
         $process->wait();
 
@@ -52,8 +52,8 @@ class Ssh
     {
         $command = sprintf(
             'ssh -p %d -l %s %s %s %s',
-            $this->configurator->getPort(),
-            $this->configurator->getUser(),
+            $this->configurator->requirePort(),
+            $this->configurator->requireUser(),
             $this->prepareAuth(),
             $this->getUserAtHost(),
             $command
@@ -71,8 +71,8 @@ class Ssh
     {
         return sprintf(
             '%s@%s',
-            $this->configurator->getUser(),
-            $this->configurator->getHost()
+            $this->configurator->requireUser(),
+            $this->configurator->requireHost()
         );
     }
 }

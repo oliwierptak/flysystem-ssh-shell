@@ -29,7 +29,7 @@ class SshShellFactory implements SshShellFactoryInterface
             $this->createVisibility()
         );
 
-        $adapter->setPathPrefix($configurator->getRoot());
+        $adapter->setPathPrefix($configurator->requireRoot());
 
         return $adapter;
     }

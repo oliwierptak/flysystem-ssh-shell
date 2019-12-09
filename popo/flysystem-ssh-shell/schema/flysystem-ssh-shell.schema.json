@@ -1,0 +1,37 @@
+[
+  {
+    "name": "SshShellConfigurator",
+    "schema": [
+      {
+        "name": "user",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "host",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "privateKey",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "authType",
+        "type": "string",
+        "default": "config"
+      },
+      {
+        "name": "root",
+        "type": "string",
+        "default": "/tmp"
+      },
+      {
+        "name": "port",
+        "type": "int",
+        "default": 22
+      }
+    ]
+  }
+]

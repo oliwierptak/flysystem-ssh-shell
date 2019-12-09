@@ -10,7 +10,8 @@
         "league/flysystem": "^1.0",
         "symfony/process": "^4",
         "phuxtil/find": "dev-php-7-2",
-        "phuxtil/stat": "dev-php-7-2"
+        "phuxtil/stat": "dev-php-7-2",
+        "popo/generator": "^1"
     },
     "require-dev": {
         "symfony/var-dumper": "^4",

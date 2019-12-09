@@ -8,7 +8,7 @@ class Scp extends Ssh
     {
         $command = sprintf(
             'scp -P %d %s %s',
-            $this->configurator->getPort(),
+            $this->configurator->requirePort(),
             $this->prepareAuth(),
             $command
         );

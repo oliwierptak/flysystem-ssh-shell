@@ -1,0 +1,14 @@
+; configure and rename this file to .popo and run vendor/bin/popo
+[popo]
+schema = popo/
+template = vendor/popo/generator/templates/
+output = src/
+namespace = Phuxtil\Flysystem\SshShell
+extension = .php
+
+[dto]
+schema = dto
+template = vendor/popo/generator/templates/
+output = src/
+namespace = Phuxtil\Flysystem\SshShell
+extension = .php
