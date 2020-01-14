@@ -60,7 +60,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
             'contents' => $contents,
             'type' => 'file',
             'size' => $size,
-            'path' => $path
+            'path' => $path,
         ];
 
         if ($visibility === false) {
@@ -90,9 +90,8 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
         $result = [
             'type' => 'file',
             'size' => $size,
-            'path' => $path
+            'path' => $path,
         ];
-
 
         if ($visibility === false) {
             return $result;
@@ -124,7 +123,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
             'contents' => $contents,
             'type' => 'file',
             'size' => $size,
-            'path' => $path
+            'path' => $path,
         ];
 
         if ($visibility === false) {
@@ -225,7 +224,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
 
         return [
             'path' => $dirname,
-            'type' => 'dir'
+            'type' => 'dir',
         ];
     }
 
@@ -246,7 +245,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
 
         return [
             'path' => $path,
-            'visibility' => $visibility
+            'visibility' => $visibility,
         ];
     }
 
@@ -284,7 +283,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
         return [
             'type' => 'file',
             'path' => $path,
-            'contents' => $contents
+            'contents' => $contents,
         ];
     }
 
@@ -298,12 +297,12 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
      */
     public function listContents($directory = '', $recursive = false)
     {
-        $directory = $this->applyPathPrefix($directory);
-        $contents = $this->reader->listContents($directory, $recursive);
+        $path = $this->applyPathPrefix($directory);
+        $contents = $this->reader->listContents($path, $recursive);
 
         $result = [];
         foreach ($contents as $fileInfo) {
-            $result[] = $fileInfo->toArray();
+            $result[] = $this->fileInfoToFilesystemResult($fileInfo);
         }
 
         return $result;
@@ -326,7 +325,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
         return [
             'type' => 'file',
             'path' => $path,
-            'stream' => $stream
+            'stream' => $stream,
         ];
     }
 
@@ -374,7 +373,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
         return [
             'path' => $path,
             'type' => 'file',
-            'mimetype' => Util::guessMimeType($location, '')
+            'mimetype' => Util::guessMimeType($location, ''),
         ];
     }
 
@@ -408,7 +407,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
         $result['timestamp'] = $metadata->getMTime();
         $result['mimetype'] = Util::guessMimeType($metadata->getPathname(), '');
 
-        return array_merge($result, $metadata->toArray());
+        return array_merge($this->fileInfoToFilesystemResult($metadata), $result);
     }
 
     /**
@@ -425,5 +424,35 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
         }
 
         return false;
+    }
+
+    public function removePathPrefix($path)
+    {
+        $path = trim(parent::removePathPrefix($path));
+
+        if ($path === '') {
+            $path = '/';
+        }
+
+        return $path;
+    }
+
+    /**
+     * @param \Phuxtil\SplFileInfo\VirtualSplFileInfo $fileInfo
+     *
+     * @return array
+     */
+    protected function fileInfoToFilesystemResult(VirtualSplFileInfo $fileInfo): array
+    {
+        $item = $fileInfo->toArray();
+
+        $item['path'] = $this->removePathPrefix($fileInfo->getPathname());
+        $item['basename'] = $item['path'];
+        $item['dirname'] = $this->removePathPrefix($fileInfo->getPath());
+        $item['filename'] = pathinfo($fileInfo->getPathname(), \PATHINFO_FILENAME);
+        $item['timestamp'] = $fileInfo->getMTime();
+        unset($item['pathname']);
+
+        return $item;
     }
 }

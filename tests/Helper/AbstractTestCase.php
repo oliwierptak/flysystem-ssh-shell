@@ -42,6 +42,8 @@ abstract class AbstractTestCase extends TestCase
 
     protected function setUp(): void
     {
+        $this->cleanup();
+
         $this->configurator = (new SshShellConfigurator())
             ->setRoot(static::REMOTE_PATH)
             ->setUser(static::SSH_USER)
@@ -49,11 +51,6 @@ abstract class AbstractTestCase extends TestCase
             ->setPort(static::SSH_PORT);
 
         $this->factory = new SshShellFactory();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->cleanup();
     }
 
     protected function cleanup()
@@ -80,16 +77,6 @@ abstract class AbstractTestCase extends TestCase
     {
         @mkdir(\dirname(static::REMOTE_FILE), 0777, true);
 
-        \file_put_contents(
-            static::REMOTE_FILE,
-            \file_get_contents(static::LOCAL_FILE)
-        );
-
-        \symlink(static::REMOTE_FILE, static::REMOTE_FILE_LINK);
-    }
-
-    protected function setupLocalFile()
-    {
         \file_put_contents(
             static::REMOTE_FILE,
             \file_get_contents(static::LOCAL_FILE)

@@ -51,7 +51,7 @@ class Ssh
     protected function prepareCommand(string $command): string
     {
         $command = sprintf(
-            'ssh -p %d -l %s %s %s %s',
+            'ssh -p %d -l %s %s %s "%s"',
             $this->configurator->requirePort(),
             $this->configurator->requireUser(),
             $this->prepareAuth(),

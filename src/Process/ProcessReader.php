@@ -44,7 +44,7 @@ class ProcessReader
         }
 
         return $this->process->execute(
-            'echo $(find -L %s %s -printf "\"%s%s"\")',
+            'echo \$(find -L %s %s -printf "\""%s%s"\"")',
             [
                 \escapeshellarg($directory),
                 $maxDepth,

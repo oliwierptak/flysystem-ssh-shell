@@ -36,10 +36,9 @@ class AdapterReaderTest extends AbstractTestCase
     {
         $metadata = $this->adapter->getMetadata(static::REMOTE_NAME);
         $expected = [
-            'path' => '/tmp/remote_fs',
-            'filename' => 'remote.txt',
+            'path' => 'remote.txt',
+            'filename' => 'remote',
             'basename' => 'remote.txt',
-            'pathname' => '/tmp/remote_fs/remote.txt',
             'extension' => 'txt',
             'realPath' => '/tmp/remote_fs/remote.txt',
             'aTime' => \fileatime(static::REMOTE_FILE),
@@ -61,6 +60,7 @@ class AdapterReaderTest extends AbstractTestCase
             'visibility' => AdapterInterface::VISIBILITY_PUBLIC,
             'timestamp' => \filemtime(static::REMOTE_FILE),
             'mimetype' => 'text/plain',
+            'dirname' => '/',
         ];
 
         $this->assertEquals(
@@ -140,8 +140,8 @@ class AdapterReaderTest extends AbstractTestCase
         $result = $this->adapter->listContents(static::REMOTE_PATH_NAME);
 
         foreach ($result as $item) {
-            $expected = new \SplFileInfo($item['pathname']);
-            $info = (new VirtualSplFileInfo($item['pathname']))
+            $expected = new \SplFileInfo($item['realPath']);
+            $info = (new VirtualSplFileInfo($item['realPath']))
                 ->fromArray($item);
 
             $this->assertOutput($expected, $info);
@@ -163,8 +163,8 @@ class AdapterReaderTest extends AbstractTestCase
         $result = $this->adapter->listContents(static::REMOTE_PATH_NAME, true);
 
         foreach ($result as $item) {
-            $expected = new \SplFileInfo($item['pathname']);
-            $info = (new VirtualSplFileInfo($item['pathname']))
+            $expected = new \SplFileInfo($item['realPath']);
+            $info = (new VirtualSplFileInfo($item['realPath']))
                 ->fromArray($item);
 
             $this->assertOutput($expected, $info);

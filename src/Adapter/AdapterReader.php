@@ -92,6 +92,8 @@ class AdapterReader
             return false;
         }
 
+        \rewind($resource);
+
         return $resource;
     }
 
