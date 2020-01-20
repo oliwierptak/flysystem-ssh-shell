@@ -200,12 +200,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/oliwierptak/phuxtil-stat.git",
-                "reference": "51b340f5691edf191cc2126d0c5e9c34fb2be260"
+                "reference": "37129a3cc87ec6db8659e3c215d0bb2289b95da7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oliwierptak/phuxtil-stat/zipball/51b340f5691edf191cc2126d0c5e9c34fb2be260",
-                "reference": "51b340f5691edf191cc2126d0c5e9c34fb2be260",
+                "url": "https://api.github.com/repos/oliwierptak/phuxtil-stat/zipball/37129a3cc87ec6db8659e3c215d0bb2289b95da7",
+                "reference": "37129a3cc87ec6db8659e3c215d0bb2289b95da7",
                 "shasum": ""
             },
             "require": {
@@ -226,7 +226,7 @@
                 "MIT"
             ],
             "description": "Easy interface for output of 'stat' unix command",
-            "time": "2020-01-20T12:58:54+00:00"
+            "time": "2020-01-20T13:01:05+00:00"
         },
         {
             "name": "popo/generator",
