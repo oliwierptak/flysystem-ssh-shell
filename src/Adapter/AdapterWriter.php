@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Phuxtil\Flysystem\SshShell\Adapter;
 
 use Phuxtil\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter;
@@ -164,7 +166,7 @@ class AdapterWriter
             return false;
         }
 
-        $filename = \tempnam(\sys_get_temp_dir(), \time()) . '.tmp';
+        $filename = \tempnam(\sys_get_temp_dir(), (string)\time()) . '.tmp';
         $stream = fopen($filename, 'w+b');
         $result = $stream && stream_copy_to_stream($resource, $stream);
 

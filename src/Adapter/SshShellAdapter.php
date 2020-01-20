@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Phuxtil\Flysystem\SshShell\Adapter;
 
 use League\Flysystem\Adapter\AbstractAdapter;
@@ -72,7 +74,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
 
     /**
      * @param string $path
-     * @param resource $resource
+     * @param resource|bool $resource
      * @param Config $config Config object
      *
      * @return array|false false on failure file meta data on success
@@ -403,7 +405,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
 
     protected function prepareMetadataResult(VirtualSplFileInfo $metadata): array
     {
-        $result['visibility'] = $this->visibilityConverter->toVisibility($metadata->getPerms(), $metadata->getType());
+        $result['visibility'] = $this->visibilityConverter->toVisibility((string)$metadata->getPerms(), $metadata->getType());
         $result['timestamp'] = $metadata->getMTime();
         $result['mimetype'] = Util::guessMimeType($metadata->getPathname(), '');
 
@@ -428,7 +430,7 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
 
     public function removePathPrefix($path)
     {
-        $path = trim(parent::removePathPrefix($path));
+        $path = trim((string)parent::removePathPrefix($path));
 
         if ($path === '') {
             $path = '/';

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace TestsPhuxtilFlysystemSshShell\Functional\Filesystem;
 
 use League\Flysystem\AdapterInterface;

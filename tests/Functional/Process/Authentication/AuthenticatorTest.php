@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace TestsPhuxtilFlysystemSshShell\Functional\Process\Authentication;
 
 use Phuxtil\Flysystem\SshShell\SshShellConfigurator;

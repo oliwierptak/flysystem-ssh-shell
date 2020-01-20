@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Phuxtil\Flysystem\SshShell\Adapter\VisibilityPermission;
 
 class VisibilityPermissionConverter
