@@ -20,12 +20,28 @@ class ProcessReader
 
     public function read(string $path, string $prefix = '', string $postfix = ''): Process
     {
-        return $this->process->execute('%s cat %s %s', [$prefix, $path, $postfix]);
+        return $this->process->execute(
+            '%s %s cat %s %s',
+            [
+                $prefix,
+                sprintf('[[ -f \'%s\' ]] && ', $path),
+                $path,
+                $postfix,
+            ]
+        );
     }
 
     public function stat(string $path, string $prefix = '', string $postfix = ''): Process
     {
-        return $this->process->execute('%s stat %s %s', [$prefix, $path, $postfix]);
+        return $this->process->execute(
+            '%s %s stat %s %s',
+            [
+                $prefix,
+                sprintf('[[ -f \'%s\' ]] && ', $path),
+                $path,
+                $postfix,
+            ]
+        );
     }
 
     /**
@@ -46,8 +62,9 @@ class ProcessReader
         }
 
         return $this->process->execute(
-            'echo \$(find -L %s %s -printf "\""%s%s"\"")',
+            '[[ -d \'%s\' ]] && echo \$(find -L %s %s -printf "\""%s%s"\"")',
             [
+                \escapeshellarg($directory),
                 \escapeshellarg($directory),
                 $maxDepth,
                 $format,
