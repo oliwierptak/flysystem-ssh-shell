@@ -13,6 +13,7 @@ use TestsPhuxtilFlysystemSshShell\Helper\AbstractTestCase;
  * @group flysystem-ssh-shell
  * @group acceptance
  * @group adapter
+ * @group reader
  */
 class AdapterReaderTest extends AbstractTestCase
 {

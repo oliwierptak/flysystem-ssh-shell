@@ -12,6 +12,7 @@ use TestsPhuxtilFlysystemSshShell\Helper\AbstractTestCase;
  * @group flysystem-ssh-shell
  * @group acceptance
  * @group adapter
+ * @group writer
  */
 class StreamWriterTest extends AbstractTestCase
 {
