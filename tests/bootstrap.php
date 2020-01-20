@@ -7,6 +7,12 @@
 \define('TESTS_SSH_USER', getenv('TESTS_SSH_USER', true));
 \define('TESTS_SSH_HOST', getenv('TESTS_SSH_HOST', true));
 
+$key = getenv('TESTS_SSH_KEY', true);
+if ($key === false) {
+    $key = '';
+}
+\define('TESTS_SSH_KEY', $key);
+
 $port = getenv('TESTS_SSH_PORT', true);
 if ($port === false) {
     $port = 22;

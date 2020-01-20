@@ -31,6 +31,7 @@ abstract class AbstractTestCase extends TestCase
     const SSH_USER = \TESTS_SSH_USER;
     const SSH_HOST = \TESTS_SSH_HOST;
     const SSH_PORT = \TESTS_SSH_PORT;
+    const SSH_KEY = \TESTS_SSH_KEY;
 
     /**
      * @var \Phuxtil\Flysystem\SshShell\SshShellConfigurator
@@ -50,7 +51,8 @@ abstract class AbstractTestCase extends TestCase
             ->setRoot(static::REMOTE_PATH)
             ->setUser(static::SSH_USER)
             ->setHost(static::SSH_HOST)
-            ->setPort(static::SSH_PORT);
+            ->setPort(static::SSH_PORT)
+            ->setPrivateKey(static::SSH_KEY);
 
         $this->factory = new SshShellFactory();
     }
