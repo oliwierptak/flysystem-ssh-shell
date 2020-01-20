@@ -2,12 +2,17 @@
 
 declare(strict_types = 1);
 
-namespace TestsPhuxtilFlysystemSshShell\Functional\Adapter;
+namespace TestsPhuxtilFlysystemSshShell\Acceptance\Adapter;
 
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
 use TestsPhuxtilFlysystemSshShell\Helper\AbstractTestCase;
 
+/**
+ * @group flysystem-ssh-shell
+ * @group acceptance
+ * @group adapter
+ */
 class StreamWriterTest extends AbstractTestCase
 {
     public function test_writeStream_should_set_visibility()

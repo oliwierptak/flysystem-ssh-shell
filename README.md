@@ -32,7 +32,7 @@ The following programs installed on the remote host:
 Use `League\Flysystem\SshShell\SshShellConfigurator` to pass options to adapter.
 
 ```php
-$configurator = (new SshShellConfigurator())
+$configurator = (new \Phuxtil\Flysystem\SshShell\SshShellConfigurator())
     ->setRoot('/remote_server/path')
     ->setUser('remote_user')
     ->setHost('remote-ssh-host')
@@ -49,7 +49,7 @@ Two authentication methods are supported:
 The value of `user@host` is configured in ssh config file.
 
 ```php
-$configurator = (new SshShellConfigurator())
+$configurator = (new \Phuxtil\Flysystem\SshShell\SshShellConfigurator())
     ->setUser('user')
     ->setHost('host');
 ```
@@ -58,7 +58,7 @@ _Note: This is the default setting._
 #### via ssh private key 
 
 ```php
-$configurator = (new SshShellConfigurator())
+$configurator = (new \Phuxtil\Flysystem\SshShell\SshShellConfigurator())
     ->setUser('user')
     ->setHost('host')
     ->setPrivateKey('path/to/id_rsa.private_key');
@@ -98,10 +98,13 @@ $filesystem = new Filesystem($adapter);
 
 Default root directory on remote host is `/tmp/remote_fs`.
 
-Set values of env variables for `TESTS_SSH_USER` and `TESTS_SSH_HOST`, or run tests with:
+Available parameters:
+- `TESTS_SSH_USER` 
+- `TESTS_SSH_HOST`
+- `TEST_SSH_PORT` (optional, default 22)
+
+Run tests with:
 
 ```shell
-TESTS_SSH_USER=... TESTS_SSH_HOST=... vendor/bin/phpunit
+TESTS_SSH_USER=... TESTS_SSH_HOST=... vendor/bin/phpunit --group acceptance
 ``` 
-
-_Note: Default value for `TESTS_SSH_PORT` is 22._

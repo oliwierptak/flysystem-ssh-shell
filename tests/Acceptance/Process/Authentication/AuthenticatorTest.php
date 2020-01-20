@@ -2,12 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace TestsPhuxtilFlysystemSshShell\Functional\Process\Authentication;
+namespace TestsPhuxtilFlysystemSshShell\Acceptance\Process\Authentication;
 
 use Phuxtil\Flysystem\SshShell\SshShellConfigurator;
 use Phuxtil\Flysystem\SshShell\Process\Authentication\Authenticator;
 use PHPUnit\Framework\TestCase;
 
+
+/**
+ * @group flysystem-ssh-shell
+ * @group acceptance
+ * @group process
+ */
 class AuthenticatorTest extends TestCase
 {
     const SSH_USER = \TESTS_SSH_USER;

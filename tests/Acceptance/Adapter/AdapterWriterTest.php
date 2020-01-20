@@ -2,16 +2,19 @@
 
 declare(strict_types = 1);
 
-namespace TestsPhuxtilFlysystemSshShell\Functional\Adapter;
+namespace TestsPhuxtilFlysystemSshShell\Acceptance\Adapter;
 
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
 use TestsPhuxtilFlysystemSshShell\Helper\AbstractTestCase;
 
+/**
+ * @group flysystem-ssh-shell
+ * @group acceptance
+ * @group adapter
+ */
 class AdapterWriterTest extends AbstractTestCase
 {
-    const TEST_CONTENTS = 'FooBaroo';
-
     public function test_writeStream_should_set_visibility()
     {
         $adapter = $this->factory->createAdapter(
@@ -24,9 +27,9 @@ class AdapterWriterTest extends AbstractTestCase
         $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
 
         $expected = [
-            'contents' => static::TEST_CONTENTS,
+            'contents' => 'FooBaroo',
             'type' => 'file',
-            'size' => strlen(static::TEST_CONTENTS),
+            'size' => strlen('FooBaroo'),
             'path' => static::REMOTE_NEWPATH_NAME,
             'visibility' => AdapterInterface::VISIBILITY_PRIVATE,
         ];
@@ -46,9 +49,9 @@ class AdapterWriterTest extends AbstractTestCase
         $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
 
         $expected = [
-            'contents' => static::TEST_CONTENTS,
+            'contents' => 'FooBaroo',
             'type' => 'file',
-            'size' => strlen(static::TEST_CONTENTS),
+            'size' => strlen('FooBaroo'),
             'path' => static::REMOTE_NEWPATH_NAME,
         ];
 
@@ -69,9 +72,9 @@ class AdapterWriterTest extends AbstractTestCase
         $result = $adapter->write(static::REMOTE_NEWPATH_NAME, 'FooBaroo', $config);
 
         $expected = [
-            'contents' => static::TEST_CONTENTS,
+            'contents' => 'FooBaroo',
             'type' => 'file',
-            'size' => strlen(static::TEST_CONTENTS),
+            'size' => strlen('FooBaroo'),
             'path' => static::REMOTE_NEWPATH_NAME,
         ];
 
@@ -105,9 +108,9 @@ class AdapterWriterTest extends AbstractTestCase
         $result = $adapter->update(static::REMOTE_NAME, 'FooBaroo', $config);
 
         $expected = [
-            'contents' => static::TEST_CONTENTS,
+            'contents' => 'FooBaroo',
             'type' => 'file',
-            'size' => strlen(static::TEST_CONTENTS),
+            'size' => strlen('FooBaroo'),
             'path' => static::REMOTE_NAME,
         ];
 
@@ -129,9 +132,9 @@ class AdapterWriterTest extends AbstractTestCase
         $result = $adapter->update(static::REMOTE_NAME, 'FooBaroo', $config);
 
         $expected = [
-            'contents' => static::TEST_CONTENTS,
+            'contents' => 'FooBaroo',
             'type' => 'file',
-            'size' => strlen(static::TEST_CONTENTS),
+            'size' => strlen('FooBaroo'),
             'path' => static::REMOTE_NAME,
             'visibility' => AdapterInterface::VISIBILITY_PRIVATE,
         ];

@@ -12,10 +12,19 @@
          stopOnSkipped="false"
          bootstrap="tests/bootstrap.php">
     <testsuites>
-        <testsuite name="FlysystemSshBashFunctional">
+        <testsuite name="FlysystemSshShellAcceptance">
+            <directory>tests/Acceptance</directory>
+        </testsuite>
+        <testsuite name="FlysystemSshShellFunctional">
             <directory>tests/Functional</directory>
         </testsuite>
     </testsuites>
+
+    <groups>
+        <exclude>
+            <group>acceptance</group>
+        </exclude>
+    </groups>
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">

@@ -2,12 +2,17 @@
 
 declare(strict_types = 1);
 
-namespace TestsPhuxtilFlysystemSshShell\Functional\Filesystem;
+namespace TestsPhuxtilFlysystemSshShell\Acceptance\Filesystem;
 
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Filesystem;
 use TestsPhuxtilFlysystemSshShell\Helper\AbstractTestCase;
 
+/**
+ * @group flysystem-ssh-shell
+ * @group acceptance
+ * @group filesystem
+ */
 class FilesystemReaderTest extends AbstractTestCase
 {
     /**

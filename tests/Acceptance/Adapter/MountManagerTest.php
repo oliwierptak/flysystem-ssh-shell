@@ -2,13 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace TestsPhuxtilFlysystemSshShell\Functional\Adapter;
+namespace TestsPhuxtilFlysystemSshShell\Acceptance\Adapter;
 
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use TestsPhuxtilFlysystemSshShell\Helper\AbstractTestCase;
 
+/**
+ * @group flysystem-ssh-shell
+ * @group acceptance
+ * @group adapter
+ */
 class MountManagerTest extends AbstractTestCase
 {
     /**

@@ -2,13 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace TestsPhuxtilFlysystemSshShell\Functional\Adapter;
+namespace TestsPhuxtilFlysystemSshShell\Acceptance\Adapter;
 
 use League\Flysystem\AdapterInterface;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
 use SplFileInfo;
 use TestsPhuxtilFlysystemSshShell\Helper\AbstractTestCase;
 
+/**
+ * @group flysystem-ssh-shell
+ * @group acceptance
+ * @group adapter
+ */
 class AdapterReaderTest extends AbstractTestCase
 {
     /**

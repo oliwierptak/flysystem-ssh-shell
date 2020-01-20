@@ -2,10 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace TestsPhuxtilFlysystemSshShell\Functional\Adapter;
+namespace TestsPhuxtilFlysystemSshShell\Acceptance\Adapter;
 
 use TestsPhuxtilFlysystemSshShell\Helper\AbstractTestCase;
 
+/**
+ * @group flysystem-ssh-shell
+ * @group acceptance
+ * @group adapter
+ */
 class StreamReaderTest extends AbstractTestCase
 {
     public function test_readStream()
