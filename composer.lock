@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cb701c4b7b162ac86bafa586a05b282d",
+    "content-hash": "ad3d6c7c0794ab54febe214212f2557f",
     "packages": [
         {
             "name": "league/flysystem",
@@ -92,16 +92,16 @@
         },
         {
             "name": "phuxtil/chmod",
-            "version": "dev-php-7-2",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oliwierptak/phuxtil-chmod.git",
-                "reference": "c072860aed9f3d882726e234f18b88c6890d7ce7"
+                "reference": "9ba964a777b71c80b26ad10d37d15e194775ac5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oliwierptak/phuxtil-chmod/zipball/c072860aed9f3d882726e234f18b88c6890d7ce7",
-                "reference": "c072860aed9f3d882726e234f18b88c6890d7ce7",
+                "url": "https://api.github.com/repos/oliwierptak/phuxtil-chmod/zipball/9ba964a777b71c80b26ad10d37d15e194775ac5b",
+                "reference": "9ba964a777b71c80b26ad10d37d15e194775ac5b",
                 "shasum": ""
             },
             "require": {
@@ -122,26 +122,26 @@
                 "MIT"
             ],
             "description": "Library to validate symbolic and octal modes used by unix chmod program",
-            "time": "2019-12-01T22:57:01+00:00"
+            "time": "2020-02-05T11:33:48+00:00"
         },
         {
             "name": "phuxtil/find",
-            "version": "dev-php-7-2",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oliwierptak/phuxtil-find.git",
-                "reference": "4c8420e693e938e19d518a5e8e3fc18cd65157db"
+                "reference": "76cafa1ab1e59daef3f1d459d50e18c4ed2c34cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oliwierptak/phuxtil-find/zipball/4c8420e693e938e19d518a5e8e3fc18cd65157db",
-                "reference": "4c8420e693e938e19d518a5e8e3fc18cd65157db",
+                "url": "https://api.github.com/repos/oliwierptak/phuxtil-find/zipball/76cafa1ab1e59daef3f1d459d50e18c4ed2c34cc",
+                "reference": "76cafa1ab1e59daef3f1d459d50e18c4ed2c34cc",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2",
-                "phuxtil/chmod": "dev-php-7-2",
-                "phuxtil/splfileinfo": "dev-php-7-2"
+                "phuxtil/chmod": "^2",
+                "phuxtil/splfileinfo": "^2"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8",
@@ -158,11 +158,11 @@
                 "MIT"
             ],
             "description": "Easy interface for output of 'find' unix command",
-            "time": "2019-12-01T23:01:19+00:00"
+            "time": "2020-02-05T11:50:15+00:00"
         },
         {
             "name": "phuxtil/splfileinfo",
-            "version": "dev-php-7-2",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oliwierptak/phuxtil-splfileinfo.git",
@@ -196,16 +196,16 @@
         },
         {
             "name": "phuxtil/stat",
-            "version": "dev-php-7-2",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oliwierptak/phuxtil-stat.git",
-                "reference": "37129a3cc87ec6db8659e3c215d0bb2289b95da7"
+                "reference": "bfe1f3c88701e12e02534ac5a04f448bbf737a25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oliwierptak/phuxtil-stat/zipball/37129a3cc87ec6db8659e3c215d0bb2289b95da7",
-                "reference": "37129a3cc87ec6db8659e3c215d0bb2289b95da7",
+                "url": "https://api.github.com/repos/oliwierptak/phuxtil-stat/zipball/bfe1f3c88701e12e02534ac5a04f448bbf737a25",
+                "reference": "bfe1f3c88701e12e02534ac5a04f448bbf737a25",
                 "shasum": ""
             },
             "require": {
@@ -226,7 +226,7 @@
                 "MIT"
             ],
             "description": "Easy interface for output of 'stat' unix command",
-            "time": "2020-01-20T13:01:05+00:00"
+            "time": "2020-02-05T11:47:21+00:00"
         },
         {
             "name": "popo/generator",
@@ -2322,11 +2322,8 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
-    "stability-flags": {
-        "phuxtil/find": 20,
-        "phuxtil/stat": 20
-    },
+    "minimum-stability": "stable",
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
