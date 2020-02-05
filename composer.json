@@ -3,14 +3,14 @@
     "description": "SSH/Shell adapter for league/flysystem",
     "type": "library",
     "license": "MIT",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
         "php": "^7.2",
         "league/flysystem": "^1.0",
         "symfony/process": "^4",
-        "phuxtil/find": "dev-php-7-2",
-        "phuxtil/stat": "dev-php-7-2",
+        "phuxtil/find": "^2",
+        "phuxtil/stat": "^2",
         "popo/generator": "^2"
     },
     "require-dev": {
