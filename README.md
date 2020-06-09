@@ -29,7 +29,7 @@ The following programs installed on the remote host:
 
 ### Configuration
 
-Use `League\Flysystem\SshShell\SshShellConfigurator` to pass options to adapter.
+Use `\Phuxtil\Flysystem\SshShell\SshShellConfigurator` to pass options to adapter.
 
 ```php
 $configurator = (new \Phuxtil\Flysystem\SshShell\SshShellConfigurator())
