@@ -31,6 +31,12 @@
         "name": "port",
         "type": "int",
         "default": 22
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "default": 60,
+        "docblock": "SSH process timeout in seconds"
       }
     ]
   }
