@@ -29,6 +29,7 @@
         }
     },
     "scripts": {
+        "popo": "vendor/bin/popo popo",
         "tests": "vendor/bin/phpunit --no-coverage",
         "tests-coverage": "vendor/bin/phpunit --coverage-html tests/logs/coverage/",
         "stan": "vendor/bin/phpstan analyze src --level 5"
