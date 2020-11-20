@@ -19,6 +19,7 @@ class SshShellConfigurator
   'authType' => 'config',
   'root' => '/tmp',
   'port' => 22,
+  'timeout' => 60,
 );
 
     /**
@@ -31,6 +32,7 @@ class SshShellConfigurator
   'authType' => 'config',
   'root' => '/tmp',
   'port' => 22,
+  'timeout' => 60,
 );
 
     /**
@@ -43,6 +45,7 @@ class SshShellConfigurator
   'authType' => 'string',
   'root' => 'string',
   'port' => 'int',
+  'timeout' => 'int',
 );
 
     /**
@@ -55,6 +58,7 @@ class SshShellConfigurator
   'authType' => '',
   'root' => '',
   'port' => '',
+  'timeout' => '',
 );
 
     /**
@@ -396,6 +400,38 @@ class SshShellConfigurator
         $this->assertPropertyValue('port');
 
         return (int)$this->popoGetValue('port');
+    }
+
+    /**
+     * @return integer|null SSH process timeout in seconds
+     */
+    public function getTimeout(): ?int
+    {
+        return $this->popoGetValue('timeout');
+    }
+
+    /**
+     * @param integer|null $timeout SSH process timeout in seconds
+     *
+     * @return self SSH process timeout in seconds
+     */
+    public function setTimeout(?int $timeout): \Phuxtil\Flysystem\SshShell\SshShellConfigurator
+    {
+        $this->popoSetValue('timeout', $timeout);
+
+        return $this;
+    }
+
+    /**
+     * @throws \UnexpectedValueException
+     *
+     * @return integer SSH process timeout in seconds
+     */
+    public function requireTimeout(): int
+    {
+        $this->assertPropertyValue('timeout');
+
+        return (int)$this->popoGetValue('timeout');
     }
 
 

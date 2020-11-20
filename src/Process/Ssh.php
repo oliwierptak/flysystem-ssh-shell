@@ -43,7 +43,7 @@ class Ssh
     {
         $command = $this->prepareCommand($command);
 
-        $process = Process::fromShellCommandline($command);
+        $process = Process::fromShellCommandline($command, null, null, null, $this->configurator->requireTimeout());
         $process->run();
         $process->wait();
 
