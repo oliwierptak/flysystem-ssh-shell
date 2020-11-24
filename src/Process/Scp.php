@@ -8,8 +8,11 @@ class Scp extends Ssh
 {
     protected function prepareCommand(string $command): string
     {
+        $optionTimeout = $this->generateConnectionTimeoutOption();
+
         $command = sprintf(
-            'scp -P %d %s %s',
+            'scp %s -P %d %s %s',
+            $optionTimeout,
             $this->configurator->requirePort(),
             $this->prepareAuth(),
             $command

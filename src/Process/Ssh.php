@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Phuxtil\Flysystem\SshShell\Process;
 
-use Phuxtil\Flysystem\SshShell\SshShellConfigurator;
 use Phuxtil\Flysystem\SshShell\Process\Authentication\Authenticator;
+use Phuxtil\Flysystem\SshShell\SshShellConfigurator;
 use Symfony\Component\Process\Process;
 
 class Ssh
@@ -43,7 +43,7 @@ class Ssh
     {
         $command = $this->prepareCommand($command);
 
-        $process = Process::fromShellCommandline($command, null, null, null, $this->configurator->requireTimeout());
+        $process = Process::fromShellCommandline($command, null, null, null, $this->configurator->getTimeout());
         $process->run();
         $process->wait();
 
@@ -52,8 +52,11 @@ class Ssh
 
     protected function prepareCommand(string $command): string
     {
+        $optionTimeout = $this->generateConnectionTimeoutOption();
+
         $command = sprintf(
-            'ssh -p %d -l %s %s %s "%s"',
+            'ssh %s -p %d -l %s %s %s "%s"',
+            $optionTimeout,
             $this->configurator->requirePort(),
             $this->configurator->requireUser(),
             $this->prepareAuth(),
@@ -76,5 +79,18 @@ class Ssh
             $this->configurator->requireUser(),
             $this->configurator->requireHost()
         );
+    }
+
+    protected function generateConnectionTimeoutOption(): string
+    {
+        $optionTimeout = '';
+        if ((int) $this->configurator->getTimeout() > 0) {
+            $optionTimeout = sprintf(
+                '-o ConnectTimeout=%d',
+                $this->configurator->getTimeout()
+            );
+        }
+
+        return $optionTimeout;
     }
 }
