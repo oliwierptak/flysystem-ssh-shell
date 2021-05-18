@@ -74,7 +74,7 @@ class FilesystemWriterTest extends AbstractTestCase
     {
         $content = $this->filesystem->readAndDelete(static::REMOTE_NAME);
 
-        $this->assertFileNotExists(static::REMOTE_FILE);
+        $this->assertFileDoesNotExist(static::REMOTE_FILE);
         $this->assertEquals($content, \file_get_contents(static::LOCAL_FILE));
     }
 
@@ -103,7 +103,7 @@ class FilesystemWriterTest extends AbstractTestCase
         $result = $this->filesystem->rename(static::REMOTE_NAME, static::REMOTE_NEWPATH_NAME);
 
         $this->assertTrue($result);
-        $this->assertFileNotExists(static::REMOTE_FILE);
+        $this->assertFileDoesNotExist(static::REMOTE_FILE);
         $this->assertFileExists(static::REMOTE_NEWPATH_FILE);
     }
 
@@ -120,7 +120,7 @@ class FilesystemWriterTest extends AbstractTestCase
         $result = $this->filesystem->delete(static::REMOTE_NAME);
 
         $this->assertTrue($result);
-        $this->assertFileNotExists(static::REMOTE_FILE);
+        $this->assertFileDoesNotExist(static::REMOTE_FILE);
     }
 
     public function test_deleteDir()
@@ -129,7 +129,7 @@ class FilesystemWriterTest extends AbstractTestCase
         $result = $this->filesystem->deleteDir('/newpath/');
 
         $this->assertTrue($result);
-        $this->assertDirectoryNotExists(static::REMOTE_NEWPATH);
+        $this->assertDirectoryDoesNotExist(static::REMOTE_NEWPATH);
     }
 
     public function test_createDir()

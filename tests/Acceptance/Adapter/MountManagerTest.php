@@ -79,6 +79,6 @@ class MountManagerTest extends AbstractTestCase
         );
 
         $this->assertContent();
-        $this->assertFileNotExists(static::REMOTE_FILE);
+        $this->assertFileDoesNotExist(static::REMOTE_FILE);
     }
 }
