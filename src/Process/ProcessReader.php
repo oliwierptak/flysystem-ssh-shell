@@ -34,7 +34,7 @@ class ProcessReader
     public function stat(string $path, string $prefix = '', string $postfix = ''): Process
     {
         return $this->process->execute(
-            '%s %s stat %s %s',
+            '%s %s LC_ALL=C stat %s %s',
             [
                 $prefix,
                 sprintf('[[ -f \'%s\' ]] && ', $path),
@@ -62,7 +62,7 @@ class ProcessReader
         }
 
         return $this->process->execute(
-            '[[ -d \'%s\' ]] && echo \$(find -L %s %s -printf "\""%s%s"\"")',
+            '[[ -d \'%s\' ]] &&  echo \$(LC_ALL=C find -L %s %s -printf "\""%s%s"\"")',
             [
                 \escapeshellarg($directory),
                 \escapeshellarg($directory),

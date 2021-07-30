@@ -30,8 +30,8 @@
     },
     "scripts": {
         "popo": "vendor/bin/popo popo",
-        "tests": "vendor/bin/phpunit --no-coverage --testdox --group acceptance",
-        "tests-coverage": "vendor/bin/phpunit --coverage-html tests/logs/coverage/ --group acceptance",
+        "test": "vendor/bin/phpunit --no-coverage --testdox --group acceptance",
+        "test-c": "vendor/bin/phpunit --coverage-html tests/logs/coverage/ --group acceptance",
         "stan": "vendor/bin/phpstan analyze src --level 5"
     }
 }
