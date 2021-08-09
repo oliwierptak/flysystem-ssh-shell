@@ -9,7 +9,7 @@
 
 $key = getenv('TESTS_SSH_KEY', true);
 if ($key === false) {
-    $key = '';
+    $key = null;
 }
 \define('TESTS_SSH_KEY', $key);
 

@@ -1,0 +1,23 @@
+$:
+  config:
+    namespace: Phuxtil\Flysystem\SshShell
+    outputPath: src/
+    namespaceRoot: Phuxtil\Flysystem\SshShell
+    comment: Phuxtil\Flysystem\SshShell configuration file. Auto-generated.
+
+phuxtil:
+  SshShellConfigurator:
+    default:
+      authType: config
+      root: /tmp
+      port: 22
+      timeout: 60
+    property: [
+      {name: user}
+      {name: host}
+      {name: privateKey}
+      {name: authType}
+      {name: root}
+      {name: port, type: int}
+      {name: timeout, type: int, comment: SSH process timeout in seconds}
+    ]}}

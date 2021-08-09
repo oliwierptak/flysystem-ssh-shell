@@ -39,7 +39,7 @@ class Authenticator
             throw new \InvalidArgumentException('Unknown authentication type: ' . $configurator->requireAuthType());
         }
 
-        if (trim($configurator->requirePrivateKey()) !== '') {
+        if ($configurator->hasPrivateKey()) {
             $configurator->setAuthType(PrivateKey::TYPE);
         }
 
