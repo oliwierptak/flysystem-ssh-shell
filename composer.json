@@ -1,5 +1,5 @@
 {
-    "name": "phuxtil/flysystem-ssh-shell",
+    "name": "productsupcom/flysystem-ssh-shell",
     "description": "SSH/Shell adapter for league/flysystem",
     "type": "library",
     "license": "MIT",
@@ -8,13 +8,13 @@
     "require": {
         "php": "^8",
         "league/flysystem": "^1",
-        "symfony/process": "^4|^5",
+        "symfony/process": "^5|^6",
         "phuxtil/find": "^3",
         "phuxtil/stat": "^3"
     },
     "require-dev": {
         "ext-posix": "*",
-        "symfony/var-dumper": "^5",
+        "symfony/var-dumper": "^5|^6",
         "phpunit/phpunit": "^9",
         "popo/generator": "^5"
     },
