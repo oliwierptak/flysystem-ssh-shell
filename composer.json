@@ -5,11 +5,18 @@
     "license": "MIT",
     "minimum-stability": "stable",
     "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.packagist.com/productsupcom/",
+            "canonical": false
+        }
+    ],
     "require": {
         "php": "^8",
         "league/flysystem": "^1",
         "symfony/process": "^5|^6",
-        "phuxtil/find": "^3",
+        "productsupcom/find": "^4",
         "phuxtil/stat": "^3"
     },
     "require-dev": {
