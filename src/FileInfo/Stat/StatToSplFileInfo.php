@@ -6,7 +6,7 @@ namespace Phuxtil\Flysystem\SshShell\FileInfo\Stat;
 
 use Phuxtil\Chmod\ChmodFacadeInterface;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
-use Phuxtil\Stat\Output\Stat;
+use Phuxtil\Stat\Stat;
 
 class StatToSplFileInfo
 {
