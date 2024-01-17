@@ -4,53 +4,37 @@ declare(strict_types = 1);
 
 namespace Phuxtil\Flysystem\SshShell\Adapter;
 
-use League\Flysystem\Adapter\AbstractAdapter;
-use League\Flysystem\Adapter\CanOverwriteFiles;
-use League\Flysystem\AdapterInterface;
+use League\Flysystem\PathPrefixer;
 use League\Flysystem\Config;
+use League\Flysystem\Visibility;
+use League\MimeTypeDetection\FinfoMimeTypeDetector;
 use Phuxtil\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter;
-use League\Flysystem\Util;
 use Phuxtil\SplFileInfo\VirtualSplFileInfo;
 
-class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, AdapterInterface
+class SshShellAdapter
 {
-    /**
-     * @var \Phuxtil\Flysystem\SshShell\Adapter\AdapterReader
-     */
-    protected $reader;
+    protected PathPrefixer $pathPrefix;
 
-    /**
-     * @var \Phuxtil\Flysystem\SshShell\Adapter\AdapterWriter
-     */
-    protected $writer;
-
-    /**
-     * @var \Phuxtil\Flysystem\SshShell\Adapter\VisibilityPermission\VisibilityPermissionConverter
-     */
-    protected $visibilityConverter;
+    protected FinfoMimeTypeDetector $mimeTypeDetector;
 
     public function __construct(
-        AdapterReader $reader,
-        AdapterWriter $writer,
-        VisibilityPermissionConverter $visibilityConverter
+        protected AdapterReader $reader,
+        protected AdapterWriter $writer,
+        protected VisibilityPermissionConverter $visibilityConverter,
+
     ) {
-        $this->reader = $reader;
-        $this->writer = $writer;
-        $this->visibilityConverter = $visibilityConverter;
+        $this->pathPrefix = new PathPrefixer('/');
+        $this->mimeTypeDetector = new FinfoMimeTypeDetector();
     }
 
-    /**
-     * Write a new file.
-     *
-     * @param string $path
-     * @param string $contents
-     * @param Config $config Config object
-     *
-     * @return array|false false on failure file meta data on success
-     */
-    public function write($path, $contents, Config $config)
+    public function setPathPrefix(string $prefix): void
     {
-        $location = $this->applyPathPrefix($path);
+        $this->pathPrefix->stripDirectoryPrefix($prefix);
+    }
+
+    public function write(string $path, string $contents, Config $config): array|false
+    {
+        $location = $this->pathPrefix->prefixPath($path);
         $size = $this->writer->write($location, $contents);
         if ($size === false) {
             return false;
@@ -79,9 +63,9 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
      *
      * @return array|false false on failure file meta data on success
      */
-    public function writeStream($path, $resource, Config $config)
+    public function writeStream(string $path, $resource, Config $config): array|false
     {
-        $location = $this->applyPathPrefix($path);
+        $location = $this->pathPrefix->prefixPath($path);
         $size = $this->writer->writeStream($location, $resource);
         if ($size === false) {
             return false;
@@ -102,18 +86,9 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
         return array_merge($result, $visibility);
     }
 
-    /**
-     * Update a file.
-     *
-     * @param string $path
-     * @param string $contents
-     * @param Config $config Config object
-     *
-     * @return array|false false on failure file meta data on success
-     */
-    public function update($path, $contents, Config $config)
+    public function update(string $path, string $contents, Config $config): array|false
     {
-        $location = $this->applyPathPrefix($path);
+        $location = $this->pathPrefix->prefixPath($path);
         $size = $this->writer->update($location, $contents);
         if ($size === false) {
             return false;
@@ -142,83 +117,45 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
      *
      * @return array|false false on failure file meta data on success
      */
-    public function updateStream($path, $resource, Config $config)
+    public function updateStream(string $path, $resource, Config $config): array|false
     {
         return $this->writeStream($path, $resource, $config);
     }
 
-    /**
-     * Rename a file.
-     *
-     * @param string $path
-     * @param string $newpath
-     *
-     * @return bool
-     */
-    public function rename($path, $newpath)
+    public function rename(string $path, string $newPath): bool
     {
-        $locationPath = $this->applyPathPrefix($path);
-        $locationNewPath = $this->applyPathPrefix($newpath);
+        $locationPath = $this->pathPrefix->prefixPath($path);
+        $locationNewPath = $this->pathPrefix->prefixPath($newPath);
 
         return $this->writer->rename($locationPath, $locationNewPath);
     }
 
-    /**
-     * Copy a file.
-     *
-     * @param string $path
-     * @param string $newpath
-     *
-     * @return bool
-     */
-    public function copy($path, $newpath)
+    public function copy(string $path, string $newPath): bool
     {
-        $locationPath = $this->applyPathPrefix($path);
-        $locationNewPath = $this->applyPathPrefix($newpath);
+        $locationPath = $this->pathPrefix->prefixPath($path);
+        $locationNewPath = $this->pathPrefix->prefixPath($newPath);
 
         return $this->writer->copy($locationPath, $locationNewPath);
     }
 
-    /**
-     * Delete a file.
-     *
-     * @param string $path
-     *
-     * @return bool
-     */
-    public function delete($path)
+    public function delete(string $path): bool
     {
-        $location = $this->applyPathPrefix($path);
+        $location = $this->pathPrefix->prefixPath($path);
 
         return $this->writer->delete($location);
     }
 
-    /**
-     * Delete a directory.
-     *
-     * @param string $dirname
-     *
-     * @return bool
-     */
-    public function deleteDir($dirname)
+    public function deleteDir(string $dirname): bool
     {
-        $location = $this->applyPathPrefix($dirname);
+        $location = $this->pathPrefix->prefixPath($dirname);
 
         return $this->writer->rmdir($location);
     }
 
-    /**
-     * Create a directory.
-     *
-     * @param string $dirname directory name
-     * @param Config $config
-     *
-     * @return array|false
-     */
-    public function createDir($dirname, Config $config)
+    public function createDir(string $dirname, Config $config): array|false
     {
-        $location = $this->applyPathPrefix($dirname);
-        $visibility = $config->get('visibility', AdapterInterface::VISIBILITY_PUBLIC);
+        $location = $this->pathPrefix->prefixPath($dirname);
+        $visibility = $config->get('visibility', Visibility::PUBLIC);
 
         if (!$this->writer->mkdir($location, $visibility)) {
             return false;
@@ -230,17 +167,9 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
         ];
     }
 
-    /**
-     * Set the visibility for a file.
-     *
-     * @param string $path
-     * @param string $visibility
-     *
-     * @return array|false file meta data
-     */
-    public function setVisibility($path, $visibility)
+    public function setVisibility(string $path, string $visibility): array|false
     {
-        $location = $this->applyPathPrefix($path);
+        $location = $this->pathPrefix->prefixPath($path);
         if (!$this->writer->setVisibility($location, $visibility, 'file')) {
             return false;
         }
@@ -251,16 +180,9 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
         ];
     }
 
-    /**
-     * Check whether a file exists.
-     *
-     * @param string $path
-     *
-     * @return array|bool|null
-     */
-    public function has($path)
+    public function has(string $path): array|bool|null
     {
-        $location = $this->applyPathPrefix($path);
+        $location = $this->pathPrefix->prefixPath($path);
         $metadata = $this->reader->getMetadata($location);
 
         return $metadata->isReadable() && !$metadata->isVirtual();
@@ -273,9 +195,9 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
      *
      * @return array|false
      */
-    public function read($path)
+    public function read(string $path): array|false
     {
-        $location = $this->applyPathPrefix($path);
+        $location = $this->pathPrefix->prefixPath($path);
         $contents = $this->reader->read($location);
 
         if ($contents === false) {
@@ -289,17 +211,9 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
         ];
     }
 
-    /**
-     * List contents of a directory.
-     *
-     * @param string $directory
-     * @param bool $recursive
-     *
-     * @return array
-     */
-    public function listContents($directory = '', $recursive = false)
+    public function listContents(string $directory = '', bool $recursive = false): array
     {
-        $path = $this->applyPathPrefix($directory);
+        $path = $this->pathPrefix->prefixPath($directory);
         $contents = $this->reader->listContents($path, $recursive);
 
         $result = [];
@@ -310,14 +224,9 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
         return $result;
     }
 
-    /**
-     * @param string $path
-     *
-     * @return array|false
-     */
-    public function readStream($path)
+    public function readStream(string $path): false|array
     {
-        $location = $this->applyPathPrefix($path);
+        $location = $this->pathPrefix->prefixPath($path);
         $stream = $this->reader->readStream($location);
 
         if ($stream === false) {
@@ -331,16 +240,9 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
         ];
     }
 
-    /**
-     * Get all the meta data of a file or directory.
-     *
-     * @param string $path
-     *
-     * @return array|false
-     */
-    public function getMetadata($path)
+    public function getMetadata(string $path): false|array
     {
-        $location = $this->applyPathPrefix($path);
+        $location = $this->pathPrefix->prefixPath($path);
         $metadata = $this->reader->getMetadata($location);
         if ($metadata->isVirtual()) {
             return false;
@@ -349,56 +251,28 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
         return $this->prepareMetadataResult($metadata);
     }
 
-    /**
-     * Get the size of a file.
-     *
-     * @param string $path
-     *
-     * @return array|false
-     */
-    public function getSize($path)
+    public function getSize(string $path): false|array
     {
         return $this->getMetadata($path);
     }
 
-    /**
-     * Get the mimetype of a file.
-     *
-     * @param string $path
-     *
-     * @return array|false
-     */
-    public function getMimetype($path)
+    public function getMimetype(string $path): false|array
     {
-        $location = $this->applyPathPrefix($path);
+        $location = $this->pathPrefix->prefixPath($path);
 
         return [
             'path' => $path,
             'type' => 'file',
-            'mimetype' => Util::guessMimeType($location, ''),
+            'mimetype' => $this->mimeTypeDetector->detectMimeType($location, ''),
         ];
     }
 
-    /**
-     * Get the last modified time of a file as a timestamp.
-     *
-     * @param string $path
-     *
-     * @return array|false
-     */
-    public function getTimestamp($path)
+    public function getTimestamp(string $path): false|array
     {
         return $this->getMetadata($path);
     }
 
-    /**
-     * Get the visibility of a file.
-     *
-     * @param string $path
-     *
-     * @return array|false
-     */
-    public function getVisibility($path)
+    public function getVisibility(string $path): false|array
     {
         return $this->getMetadata($path);
     }
@@ -407,18 +281,12 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
     {
         $result['visibility'] = $this->visibilityConverter->toVisibility((string)$metadata->getPerms(), $metadata->getType());
         $result['timestamp'] = $metadata->getMTime();
-        $result['mimetype'] = Util::guessMimeType($metadata->getPathname(), '');
+        $result['mimetype'] = $this->mimeTypeDetector->detectMimeType($metadata->getPathname(), '');
 
         return array_merge($this->fileInfoToFilesystemResult($metadata), $result);
     }
 
-    /**
-     * @param string $path
-     * @param \League\Flysystem\Config $config
-     *
-     * @return array|false
-     */
-    protected function updatePathVisibility(string $path, Config $config)
+    protected function updatePathVisibility(string $path, Config $config): false|array
     {
         $visibility = $config->get('visibility');
         if ($visibility) {
@@ -428,9 +296,9 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
         return false;
     }
 
-    public function removePathPrefix($path)
+    public function removePathPrefix(string $path): string
     {
-        $path = trim((string)parent::removePathPrefix($path));
+        $path = trim($this->pathPrefix->stripPrefix($path));
 
         if ($path === '') {
             $path = '/';
@@ -439,11 +307,6 @@ class SshShellAdapter extends AbstractAdapter implements CanOverwriteFiles, Adap
         return $path;
     }
 
-    /**
-     * @param \Phuxtil\SplFileInfo\VirtualSplFileInfo $fileInfo
-     *
-     * @return array
-     */
     protected function fileInfoToFilesystemResult(VirtualSplFileInfo $fileInfo): array
     {
         $item = $fileInfo->toArray();

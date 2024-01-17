@@ -1,25 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" backupStaticAttributes="false" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false" stopOnFailure="true" stopOnError="true" stopOnIncomplete="false" stopOnSkipped="false" bootstrap="tests/bootstrap.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage processUncoveredFiles="true">
-    <include>
-      <directory suffix=".php">./src/</directory>
-    </include>
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         backupGlobals="false"
+         colors="true"
+         processIsolation="false"
+         stopOnFailure="true"
+         stopOnError="true"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         bootstrap="tests/bootstrap.php"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.4/phpunit.xsd"
+>
+<coverage>
     <report>
-      <clover outputFile="./tests/logs/coverage.xml"/>
-      <html outputDirectory="./tests/logs/coverage"/>
+        <clover outputFile="./tests/logs/coverage.xml"/>
+        <html outputDirectory="./tests/logs/coverage" lowUpperBound="50" highLowerBound="80"/>
     </report>
-  </coverage>
-  <testsuites>
+</coverage>
+<testsuites>
     <testsuite name="FlysystemSshShellAcceptance">
-      <directory>tests/Acceptance</directory>
+        <directory>tests/Acceptance</directory>
     </testsuite>
-  </testsuites>
-  <groups>
-    <exclude>
-      <group>acceptance</group>
-    </exclude>
-  </groups>
-  <logging>
-    <testdoxHtml outputFile="./tests/logs/coverage/index.html"/>
-  </logging>
+</testsuites>
+<php>
+    <env name="TESTS_SSH_KEY" value="root"/>
+    <env name="TESTS_SSH_USER" value="root"/>
+    <env name="TESTS_SSH_HOST" value="pup-data-container"/>
+    <server name="WORKSPACE" value="/tmp/" force="true"/>
+</php>
+<logging>
+    <testdoxHtml outputFile="./tests/logs/testdox.html"/>
+</logging>
 </phpunit>

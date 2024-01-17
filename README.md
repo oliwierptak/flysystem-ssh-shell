@@ -104,5 +104,5 @@ Available parameters:
 Run tests with:
 
 ```shell
-TESTS_SSH_USER=... TESTS_SSH_HOST=... vendor/bin/phpunit --group acceptance
+TESTS_SSH_USER=root TESTS_SSH_HOST=data-container vendor/bin/phpunit --group acceptance
 ``` 
